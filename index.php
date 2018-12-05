@@ -1,20 +1,28 @@
 <?
-    include_once(realpath(dirname(__FILE__) . "/resources/classes/Request.php"));
-    include_once(realpath(dirname(__FILE__) . "/resources/modules/Router.php"));
+    require_once(realpath(dirname(__FILE__) . "/resources/classes/Request.php"));
+    require_once(realpath(dirname(__FILE__) . "/resources/modules/Router.php"));
+    require_once(realpath(dirname(__FILE__) . "/ctrl/LoginController.php"));
 
     //start router
     $router = new Router(new Request);
 
+    //get-handler for index/login page
     $router->get('/', function ($request) {
-        echo "Hello World";
+        $loginCtrl = new LoginController("GET");
+        $loginCtrl->render();
     });
 
-    $router->get('/test', function () {
+    //post-handler for login
+    $router->post('/login', function ($request) {
+        echo "Logged in";
+    });
+
+    $router->get('/test', function ($request) {
         echo "Test";
-    });
-
-    $router->get('/user', function() {
-        header("Location: user.php");
-        exit();
-    });
+        $params = $request->getBody();
+        foreach ($params as $key => $value) {
+            echo (string)$key;
+            echo (string)$value;
+        }
+    });    
 ?>

@@ -1,0 +1,20 @@
+.backgroundImage {
+    background: no-repeat center center fixed; 
+    background-size: cover;
+    display: block;
+    left: -5px;
+    top:-5px;
+    bottom:-5px;
+    position: fixed;
+    right: -5px;
+    z-index: -5;
+    -webkit-filter: blur(5px) grayscale(100%);
+    -moz-filter: blur(5px) grayscale(100%);
+    -o-filter: blur(5px) grayscale(100%);
+    -ms-filter: blur(5px) grayscale(100%);
+    filter: blur(5px) grayscale(100%);    
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    margin:-5px;
+}

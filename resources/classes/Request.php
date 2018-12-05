@@ -6,13 +6,17 @@
         //constructor
         function __construct()
         {
-            $this->bootstrapSelf();
+            $this->bootstrapSelf();            
         }
 
         //creates for each key in $_SERVER a property in this class and stores the value
         private function bootstrapSelf() 
         {
             foreach ($_SERVER as $key => $value) {
+                //take only the uri without the params => to enter the request handler properly
+                if ($key === "REQUEST_URI") {
+                    $value = explode("?", $value)[0];
+                }
                 $this->{$this->toCamelCase($key)} = $value;
             }
         }
@@ -31,11 +35,17 @@
             return $result;
         }
 
-        //implementation of getBody() from IRequest
+        /**
+         * gets the given arguments of the request based on the request-methods
+         **/
         public function getBody()
         {
             if ($this->requestMethod == "GET") {
-                return;
+                $result = array();                
+                foreach ($_GET as $key => $value) {
+                    $result[$key] = $value;
+                }
+                return $result;
             }
 
             if ($this->requestMethod == "POST") {
