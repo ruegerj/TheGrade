@@ -27,33 +27,31 @@
             <div class="jumbotron jumbotron-fluid bg-secondary rounded shadow p-3" style="opacity: 0.9">                
                 <h1 class="display-4 text-center mb-3">The Grade - Login</h1>                
                 <div class="w-75 m-auto">
-                    <form class="mb-3" action="/login" method="post">
+                    <form id="loginForm" class="mb-3" action="/login" method="post">
                         <hr class="w-100 border border-white mt-3 mb-3" />
-                        <input class="form-control mb-3 border border-lg" type="email" name="email" placeholder="You're E-Mail">                                                              
-                        <input class="form-control mb-3 border border-lg" type="password" name="password" placeholder="You're Password">
+                        <input class="form-control mb-3 border border-lg" type="email" name="emailLogin" placeholder="You're E-Mail">                                                              
+                        <input class="form-control mb-3 border border-lg" type="password" name="passwordLogin" placeholder="You're Password">
                         <hr class="w-100 border border-white mt-3 mb-3" />
                     </form>                
                     <div class="d-flex flex-row">
                         <button login class="w-100 btn btn-outline-light mt-2 mb-3 mr-1">Login</button>
-                        <button register class="w-100 btn btn-outline-light mt-2 mb-3 ml-1">Register</button>
+                        <button register class="w-100 btn btn-outline-light mt-2 mb-3 ml-1" data-toggle="modal" data-target="#registerModal">Register</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <? require_once("RegisterViewModal.php") ?>
     <script>
         const borderAlert = 'border-danger';
-        const form = document.querySelector('form');
+        const form = document.getElementById('loginForm');
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('[login]').addEventListener('click', () => {
                 if (validateInput() === true) {                    
                     form.submit();                   
                 }
             });
-            document.querySelector('[register]').addEventListener('click', () => {
-                
-            });
-            
+
             document.addEventListener('keydown', e => {
                 if (e.keyCode === 13) {
                     if (validateInput() === true) {
@@ -62,7 +60,7 @@
                 }
             });
 
-            Array.from(document.querySelectorAll('input[type=email], input[type=password]')).forEach(e => {
+            Array.from(document.querySelectorAll('input[name=emailLogin], input[name=passwordLogin]')).forEach(e => {
                 e.addEventListener('input', () => {
                     e.classList.remove(borderAlert);
                 });
@@ -74,9 +72,10 @@
             let passwordValid = false;
             const mailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             const minPassLength = 8;
-            const inputs = Array.from(document.querySelectorAll('input[type=email], input[type=password]'));
+            const inputs = Array.from(document.querySelectorAll('input[name=emailLogin], input[name=passwordLogin]'));
+            console.log(inputs);
             inputs.forEach(e => {
-                if (e.type.toLowerCase() === "email") {
+                if (e.type.toLowerCase() === "email") {                    
                     mailValid = mailPattern.test(String(e.value));
                     if (mailValid === false) {
                         highlightInput(e);
@@ -87,7 +86,7 @@
                         highlightInput(e);
                     }
                 }                
-            });
+            });            
             return mailValid && passwordValid;
         }
 

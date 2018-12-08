@@ -1,5 +1,6 @@
 <?
-    include_once("IRequest.php");
+    require_once($_SERVER["DOCUMENT_ROOT"] . "/resources/config.php");
+    require_once($config["paths"]["resources"]["interface"] . "/IRequest.php");
 
     class Request implements IRequest
     {

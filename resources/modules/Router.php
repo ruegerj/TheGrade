@@ -1,5 +1,5 @@
 <?
-    include_once(realpath(dirname(__FILE__) . "/../classes/Request.php"));
+    require_once($GLOBALS["config"]["paths"]["resources"]["interface"] . "/IRequest.php");
 
     class Router {
         private $request;

@@ -3,6 +3,8 @@
     require_once(realpath(dirname(__FILE__) . "/resources/modules/Router.php"));
     require_once(realpath(dirname(__FILE__) . "/ctrl/LoginController.php"));
 
+    $GLOBALS["config"] = $config; // store config in super global array
+
     //start router
     $router = new Router(new Request);
 
@@ -15,6 +17,15 @@
     //post-handler for login
     $router->post('/login', function ($request) {
         echo "Logged in";
+    });
+
+    $router->post('/register', function ($request) {
+        $params = $request->getBody();
+        foreach ($params as $key => $value) {
+            echo (string)$key . "|";
+            echo (string)$value . "//";
+        }
+
     });
 
     $router->get('/test', function ($request) {

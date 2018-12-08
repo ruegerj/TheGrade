@@ -1,7 +1,4 @@
 <?
-    //get config
-    require_once(realpath(dirname(__FILE__) . "/../config.php"));
-
     /**
     *    renders a view
     *    @param contentFile (string)
@@ -9,8 +6,9 @@
     *    @param variables (array:mixed)
     */
     function renderFileInTemplate($contenFile, $renderDefault = true, $variables = array()) 
-    {
-        $contentFilePath = VIEWS_PATH . "/" . $contenFile;
+    {        
+        //get config via $GLOBALS
+        $contentFilePath = $GLOBALS["config"]["paths"]["view"] . "/" . $contenFile;
 
         //store vars in current scope
         if (count($variables) > 0)
@@ -22,7 +20,7 @@
             }
         }
         if ($renderDefault === true) {
-            require_once(TEMPLATES_PATH . "/header.php");
+            require_once($GLOBALS["config"]["paths"]["resources"]["template"] . "/header.php");
         }
         
         //page exists ?
@@ -30,11 +28,11 @@
             require_once($contentFilePath);
         } else {
            //redirect to error page             
-           require_once(TEMPLATES_PATH . "/error.php");
+           require_once($GLOBALS["config"]["paths"]["resources"]["template"] . "/error.php");
         }
 
         if ($renderDefault === true) {
-            require_once(TEMPLATES_PATH . "/footer.php");
+            require_once($GLOBALS["config"]["paths"]["resources"]["template"] . "/footer.php");
         }
         
     }

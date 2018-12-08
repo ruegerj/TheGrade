@@ -1,7 +1,6 @@
 <?
-    require_once(realpath($_SERVER["DOCUMENT_ROOT"] . "/resources/config.php"));
-    require_once(realpath(MODULES_PATH . "/TemplateHelper.php"));
-    require_once(realpath($_SERVER["DOCUMENT_ROOT"] . "/resources/classes/IController.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["interface"] . "/IController.php"));
 
     class LoginController implements IController
     {
@@ -16,8 +15,15 @@
         {
             renderFileInTemplate("LoginView.php", false, array("title" => "Welcome"));
         }
+
+        public function getData()
+        {
+            return array();
+        }
+
+        public function validate()
+        {
+            return false;
+        }
     }
-
-
-        
 ?>
