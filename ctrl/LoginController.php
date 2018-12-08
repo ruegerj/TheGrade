@@ -13,7 +13,7 @@
 
         public function render() 
         {
-            renderFileInTemplate("LoginView.php", false, array("title" => "Welcome"));
+            TemplateHelper::renderFileInTemplate("LoginView.php", false, array("title" => "Welcome"));
         }
 
         public function getData()

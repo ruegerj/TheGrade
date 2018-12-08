@@ -2,10 +2,10 @@
     $documentRoot = $_SERVER["DOCUMENT_ROOT"];
     $config = array(
         "db" => array(
-            "dbname" => "theGradeDB",
+            "dbname" => "thegradedb",
             "username" => "gradr",
             "password" => "ThEgRadEaccEss27",
-            "host" => "localhost"
+            "host" => "localhost:3306"
         ),
         "urls" => array(
             "baseUrl" => "localhost"

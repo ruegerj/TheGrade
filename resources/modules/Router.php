@@ -1,5 +1,6 @@
 <?
     require_once($GLOBALS["config"]["paths"]["resources"]["interface"] . "/IRequest.php");
+    require_once($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php");
 
     class Router {
         private $request;
@@ -43,12 +44,12 @@
 
         private function invalidMethodHandler()
         {
-            header("{$this->request->serverProtocol} 405 Method Not Allowed");
+            TemplateHelper::renderErrorPage("405", "Method is not allow", "Requested HTTp-MEthod is not allowed");
         }
 
         private function defaultRequestHandler()
         {
-            header("{$this->request->serverProtocol} 404 Not Found");
+            TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File not found");            
         }
 
         /**
