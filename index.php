@@ -9,34 +9,42 @@
     require_once(realpath($config["paths"]["resources"]["module"] . "/HashHelper.php"));
     require_once(realpath($config["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($config["paths"]["controller"] . "/LoginController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
 
-    //get session-helper / start session
-    $sessionHelper = new SessionHelper();
+    //start session, if needed
+    new SessionHelper();
   
     //get db-helper / establish connection
     $dbHelper = new DBHelper(); 
-           
+
     //start router
     $router = new Router(new Request);    
 
     //get-handler for index/login page
     $router->get('/', function ($request) {
-        $loginCtrl = new LoginController("GET");
-        $loginCtrl->render();
+        $sessionHelper = new SessionHelper();
+        if ($sessionHelper->checkLogin()) {
+            echo "Login successful";
+            echo "<br/>" . $_SESSION["USER_TOKEN"];
+            echo "<br/>" . $_SESSION["USER_ID"];
+            echo "<br/>" . $_SESSION["USER_NAME"];
+            echo "<br/>" . $_SESSION["USER_PRENAME"];
+            echo "<br/>" . $_SESSION["USER_EMAIL"];
+        } else {
+            LoginController::get(array());
+        }
     });
 
     //post-handler for login
     $router->post('/login', function ($request) {
         echo "Logged in";  
+
     });
 
     //post-handler for register
     $router->post('/register', function ($request) {
-        $params = $request->getBody();
-        foreach ($params as $key => $value) {
-            echo (string)$key . "|";
-            echo (string)$value . "//";
-        }
+        $params = $request->getBody();        
+        RegisterController::post($params);        
     });
 
     $router->get('/test', function ($request) {

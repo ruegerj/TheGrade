@@ -10,6 +10,7 @@
       <div class="modal-body">
         <div class="container">
             <form action="/register" method="post" id="registerForm">
+                <input type="hidden" name="aftoken" value="<? echo $afToken?>" />
                 <div class="d-flex flex-row justify-content-between mb-3">
                     <input reg class="form-control border" type="text" name="prename" placeholder="You're Prename">  
                     <h3 class="text-danger far fa-times-circle align-self-center ml-2 mb-0 p-1"></h3>   
@@ -68,7 +69,7 @@
         const inputType = elem.type;
         const inputVal = String(elem.value);
         if (inputType === "text") {
-            if (inputVal.length >= 3) {
+            if (inputVal.length >= 3 && inputVal.length <= 30) {
                 setSuccessState(elem);
                 elem.name === "prename" ? prenameC = true : nameC = true;
             } else {
@@ -76,7 +77,7 @@
                 elem.name === "prename" ? prenameC = false : nameC = false;
             }
         } else if (inputType === "email") {
-            if (mailPattern.test(inputVal)) {
+            if (mailPattern.test(inputVal) && inputVal.length <= 50) {
                 setSuccessState(elem);
                 mail = true;
             } else {
@@ -85,7 +86,7 @@
             }
         } else if (inputType === "password") {
             if (elem.name === "password") {
-                if (inputVal.length > minPassLength) {
+                if (inputVal.length > minPassLength && inputVal.length <= 50) {
                     setSuccessState(elem);
                     password = true;
                 } else {

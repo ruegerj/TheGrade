@@ -3,9 +3,9 @@
     {
         /**
         *    renders a view
-        *    @param contentFile (string)
-        *    @param renderDefault (bool)
-        *    @param variables (array:mixed)
+        *    @param $contentFile (string)
+        *    @param $renderDefault (bool)
+        *    @param $variables (array:mixed)
         */
         public static function renderFileInTemplate($contenFile, $renderDefault = true, $variables = array()) 
         {        
@@ -35,7 +35,7 @@
                 
             } else {
                 //render error-page
-                renderErrorPage("404", "Requested page doesn't exist", "File: " . $contenFile . " not found");
+                TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File: " . $contenFile . " not found");
             }
     
         }

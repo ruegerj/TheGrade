@@ -1,11 +1,8 @@
 <?
     interface IController 
     {
-        public function render();
+        public static function get($params);
 
-        public function getData();
-
-        public function validate();
-
+        public static function post($params);
     }
 ?>

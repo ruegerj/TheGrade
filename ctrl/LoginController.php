@@ -1,29 +1,20 @@
 <?
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/SessionHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["interface"] . "/IController.php"));
 
     class LoginController implements IController
     {
-        private $method;
+       public static function get($params)
+       {
+            $sessionHelper = new SessionHelper();
+            $token = $sessionHelper->generateAntiForgeryToken();
+            TemplateHelper::renderFileInTemplate("LoginView.php", false, array($params, "title" => "Welcome", "afToken" => $token));
+       }    
 
-        function __construct($requestMethod) 
-        {
-            $this->method = $requestMethod;
-        }
+       public static function post($params)
+       {
 
-        public function render() 
-        {
-            TemplateHelper::renderFileInTemplate("LoginView.php", false, array("title" => "Welcome"));
-        }
-
-        public function getData()
-        {
-            return array();
-        }
-
-        public function validate()
-        {
-            return false;
-        }
+       }
     }
 ?>
