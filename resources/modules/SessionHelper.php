@@ -46,13 +46,14 @@
          */
         public function LoginUser(User $user)
         {
+            echo "loggin in..";
             $userToken = HashHelper::generateToken(array($user->Id, $user->Name, $user->Prename, $user->Email));            
             $_SESSION[$this->tokenList["user"]] = $userToken;                        
             $_SESSION[$this->tokenList["id"]] = $user->Id;
             $_SESSION[$this->tokenList["name"]] = $user->Name;            
             $_SESSION[$this->tokenList["prename"]] = $user->Prename;
             $_SESSION[$this->tokenList["email"]] = $user->Email;
-            header("Location: /" ); //redirect to index            
+            header("Location: /"); //redirect to index            
         }
 
         /**

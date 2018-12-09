@@ -68,6 +68,8 @@
         const minPassLength = (8 - 1);
         const inputType = elem.type;
         const inputVal = String(elem.value);
+        const emailDiv = document.querySelector('input[reg][type="email"]').parentElement;
+        const mailExistsMessage = "This email adress isn't available, please choose another one.";
         if (inputType === "text") {
             if (inputVal.length >= 3 && inputVal.length <= 30) {
                 setSuccessState(elem);
@@ -77,9 +79,33 @@
                 elem.name === "prename" ? prenameC = false : nameC = false;
             }
         } else if (inputType === "email") {
-            if (mailPattern.test(inputVal) && inputVal.length <= 50) {
-                setSuccessState(elem);
-                mail = true;
+            if (mailPattern.test(inputVal) && inputVal.length <= 50) {                
+                $.ajax({
+                    type: "POST",
+                    url: "/api/checkmail",
+                    data: {
+                        email: inputVal
+                    },
+                    success: (data) => {
+                        let result = JSON.parse(data);
+                        if (result.available === false) {                            
+                            emailDiv.setAttribute('title', mailExistsMessage);
+                            emailDiv.setAttribute('data-original-title', mailExistsMessage);
+                            $('[title]').tooltip();
+                            mail = false;
+                        } else {                                                        
+                            emailDiv.removeAttribute('title');
+                            emailDiv.removeAttribute('data-original-title');
+                            setSuccessState(elem);
+                            mail = true
+                        }
+                    },
+                    fail: () => {
+                        $('title').tooltip();                        
+                        emailDiv.setAttribute('title', mailExistsMessage);
+                        $('[title]').tooltip();
+                    }
+                })
             } else {
                 setFailureState(elem);
                 mail = false;

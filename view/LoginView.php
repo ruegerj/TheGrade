@@ -9,7 +9,7 @@
           echo $title;
         } else {
           echo "The Grade";
-        }
+        }        
       ?>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
@@ -20,7 +20,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/../../resources/css/main.css">
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!-- popper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
@@ -57,14 +57,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('[login]').addEventListener('click', () => {
                 if (validateInput() === true) {                    
-                    form.submit();                   
+                    login();                  
                 }
             });
 
             document.addEventListener('keydown', e => {
                 if (e.keyCode === 13) {
                     if (validateInput() === true) {
-                        form.submit();
+                        login();
                     }
                 }
             });
@@ -74,6 +74,8 @@
                     e.classList.remove(borderAlert);
                 });
             });
+
+            $('[title]').tooltip();
         });
 
         function validateInput() {
@@ -101,6 +103,34 @@
 
         function highlightInput(input) {
             input.classList.add(borderAlert);
+        }
+
+        function login() {
+            $.ajax({
+                type: "POST", 
+                url: "/api/checkmail",
+                data: {
+                    email: document.querySelector('[name="emailLogin"]').value
+                },
+                success: (data) => {
+                    let result = JSON.parse(data);
+                    if (result.available === true) {
+                        //user isnt registered yet
+                        showModal();
+                    } else {
+                        form.submit();
+                    }
+                }, 
+                fail: () => {
+                    showModal();
+                }
+            })
+        }
+
+        function showModal()
+        {
+            form.reset();
+            $('#registerModal').modal('show');
         }
     </script>
 </body>

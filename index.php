@@ -10,6 +10,7 @@
     require_once(realpath($config["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($config["paths"]["controller"] . "/LoginController.php"));
     require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/ApiController.php"));
 
     //start session, if needed
     new SessionHelper();
@@ -37,10 +38,11 @@
 
     //post-handler for login
     $router->post('/login', function ($request) {
-        echo "Logged in";  
-
+        $params = $request->getBody();        
+        LoginController::post($params);
     });
 
+    //get-handler for logout
     $router->get('/logout', function ($request) {
         $sessionHelper = new SessionHelper();
         $sessionHelper->LogoutUser();
@@ -50,6 +52,12 @@
     $router->post('/register', function ($request) {
         $params = $request->getBody();        
         RegisterController::post($params);        
+    });
+
+    //post handler for api calls to checkmail
+    $router->post('/api/checkmail', function ($request) {
+        $params = $request->getBody();
+        ApiController::checkEmailAvailable($params["email"]);        
     });
 
     $router->get('/test', function ($request) {

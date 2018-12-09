@@ -22,7 +22,7 @@
                 $this->pdoConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // disable emulation of prepared statements
                 $this->pdoConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); //enable error output                            
             } catch (Exception $ex) { // connection couldnt be establisht
-                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex);
+                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
                 die();
             }       
         }
@@ -42,12 +42,13 @@
                 $statement->execute(array(":name" => $name, ":prename" => $prename, ":email" => $email, ":password" => $password));   
                 return $this->getUserById($newId = $pdo->lastInsertId());            
             } catch (PDOException $ex) {
-                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex);
+                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
             }
         }
 
         /**
          * gets an user by the id and returns a user object
+         * @param $id id of requested user
          */
         public function getUserById($id)
         {
@@ -55,17 +56,56 @@
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("SELECT * FROM user WHERE Id = :id");
                 $statement->execute(array(":id" => $id));
-                $result = $statement->fetchAll()[0];
-                $user = new User($result["Id"], $result["Name"], $result["Prename"], $result["Email"], $result["Password"]);
-                // while($row = $statement->fetch()) {                    
-                //     $user = new User($row["Id"], $row["Name"], $row["Prename"], $row["Email"], $row["Password"]);                    
-                // }    
-                return $user;
-
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                extract($result); // eg. turn $result["name"] into $name 
+                return new User($Id, $Name, $Prename, $Email, $Password);                                 
             } catch (Exception $ex) {
-                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex);
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
             }
-        }        
+        }    
+
+        /**
+         * gets an user by the email and returns an user object
+         * @param $email email of requested user
+         */
+        public function getUserByEmail($email)
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT * FROM user WHERE Email = :email");
+                $statement->execute(array(":email" => $email));
+                if ($statement->rowCount() > 0) {
+                    $result = $statement->fetch(PDO::FETCH_ASSOC);
+                    extract($result); //extract variables from array
+                    return new User($Id, $Name, $Prename, $Email, $Password);
+                } else {
+                    return null;
+                }
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+            }
+        }
+        
+        /**
+         * gets all emails wich equals the given email
+         * @param $email email to search
+         */
+        public function getMatchingEmails($email)
+        {
+            try {
+                $pdo = $this->pdoConnection;                
+                $statement = $pdo->prepare("SELECT Email FROM user WHERE Email = :email");
+                $statement->execute(array(":email" => $email));
+                $emailsFound = array();
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row); //extract variables from array
+                    array_push($emailsFound, $Email);                    
+                }               
+                return $emailsFound;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+            }
+        }
 
         private function closeConnection()
         {

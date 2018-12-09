@@ -44,7 +44,7 @@
 
         private function invalidMethodHandler()
         {
-            TemplateHelper::renderErrorPage("405", "Method is not allow", "Requested HTTp-MEthod is not allowed");
+            TemplateHelper::renderErrorPage("405", "Method is not allowed", "Requested HTTp-MEthod is not allowed");
         }
 
         private function defaultRequestHandler()

@@ -32,7 +32,7 @@
                 )
             );
             
-            //trim user input and encodes it to utf8
+            //trim user input
             foreach ($params as $key => $value) {
                 $params[$key] = stripslashes(trim($value));
             }
@@ -48,10 +48,12 @@
             if (isset($aftoken) && isset($name) && isset($prename) && isset($email) && isset($password) && isset($passwordConfirm)) {
                 $sessionHelper = new SessionHelper();
                 $forgeryTokenValid = $sessionHelper->checkAntiforgeryToken($aftoken);  
+                $dbHelper = new DBHelper();
+                $matchingMailsCount = count($dbHelper->getMatchingEmails($email));
                 //check if data is valid with conditions              
                 if ($forgeryTokenValid === true && (strlen($name) >= $conditions["name"]["min"] && strlen($name) <= $conditions["name"]["max"])
                     && (strlen($prename) >= $conditions["prename"]["min"] && strlen($prename) <= $conditions["prename"]["max"])
-                    && preg_match($conditions["email"], $email) && (strlen($password) >= $conditions["password"]["min"] && strlen($password) <= $conditions["password"]["max"])
+                    && (preg_match($conditions["email"], $email) && $matchingMailsCount <= 0) && (strlen($password) >= $conditions["password"]["min"] && strlen($password) <= $conditions["password"]["max"])
                     && $password === $passwordConfirm) 
                 {
                     $hashedPassword = HashHelper::generateHash($password);
