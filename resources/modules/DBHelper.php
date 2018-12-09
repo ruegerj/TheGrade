@@ -39,8 +39,7 @@
             try {
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("INSERT INTO user (Name, Prename, Email, Password) VALUES (:name, :prename, :email, :password)");
-                $statement->execute(array(":name" => $name, ":prename" => $prename, ":email" => $email, ":password" => $password));
-                $result = $statement->fetch();    
+                $statement->execute(array(":name" => $name, ":prename" => $prename, ":email" => $email, ":password" => $password));   
                 return $this->getUserById($newId = $pdo->lastInsertId());            
             } catch (PDOException $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex);
@@ -56,10 +55,11 @@
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("SELECT * FROM user WHERE Id = :id");
                 $statement->execute(array(":id" => $id));
-                $user;
-                while($row = $statement->fetch()) {                    
-                    $user = new User($row["Id"], $row["Name"], $row["Prename"], $row["Email"], $row["Password"]);                    
-                }    
+                $result = $statement->fetchAll()[0];
+                $user = new User($result["Id"], $result["Name"], $result["Prename"], $result["Email"], $result["Password"]);
+                // while($row = $statement->fetch()) {                    
+                //     $user = new User($row["Id"], $row["Name"], $row["Prename"], $row["Email"], $row["Password"]);                    
+                // }    
                 return $user;
 
             } catch (Exception $ex) {

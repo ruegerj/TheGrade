@@ -41,6 +41,11 @@
 
     });
 
+    $router->get('/logout', function ($request) {
+        $sessionHelper = new SessionHelper();
+        $sessionHelper->LogoutUser();
+    });
+
     //post-handler for register
     $router->post('/register', function ($request) {
         $params = $request->getBody();        
@@ -48,11 +53,6 @@
     });
 
     $router->get('/test', function ($request) {
-        echo "Test";
-        $params = $request->getBody();
-        foreach ($params as $key => $value) {
-            echo (string)$key;
-            echo (string)$value;
-        }
+        echo "test";
     });     
 ?>
