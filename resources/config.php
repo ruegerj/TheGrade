@@ -19,7 +19,16 @@
             ),
             "controller" => $documentRoot . "/ctrl",
             "view" => $documentRoot . "/view"
-        )        
+        ), 
+        "session" => array(
+            "user" => "USER_TOKEN",
+            "forgery" => "ANTIFORGERY_TOKEN",
+            "id" => "USER_ID",
+            "name" => "USER_NAME",
+            "prename" => "USER_PRENAME",
+            "email" => "USER_EMAIL",
+            "activity" => "USER_LAST_ACTIVITY"
+        )   
     );
 
     //Error reporting

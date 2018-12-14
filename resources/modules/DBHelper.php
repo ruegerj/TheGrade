@@ -1,6 +1,7 @@
 <?
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/User.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/Area.php"));
 
     class DBHelper 
     {
@@ -18,7 +19,7 @@
             $username = $GLOBALS["config"]["db"]["username"];
             $password = $GLOBALS["config"]["db"]["password"];     
             try {
-                $this->pdoConnection = new PDO("mysql:host=". $host .";dbname=". $dbName, $username, $password);
+                $this->pdoConnection = new PDO("mysql:charset=utf8mb4;host=". $host .";dbname=". $dbName, $username, $password);
                 $this->pdoConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // disable emulation of prepared statements
                 $this->pdoConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); //enable error output                            
             } catch (Exception $ex) { // connection couldnt be establisht
@@ -105,6 +106,28 @@
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
             }
+        }
+
+        /**
+         * gets all areas of a user
+         * @param $userId id of a user
+         */
+        public function getAllAreas($userId)
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT area.Id, area.Title, area.Description, area.SubjectAverage FROM user INNER JOIN area ON user.Id = area.UserId WHERE user.Id = :userId");
+                $statement->execute(array(":userId" => $userId));
+                $areas = array();
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    array_push($areas, new Area($Id, $Title, $Description, $SubjectAverage, $userId));
+                }
+                return $areas;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+            }
+
         }
 
         private function closeConnection()

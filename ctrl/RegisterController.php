@@ -7,13 +7,13 @@
 
     class RegisterController implements IController
     {
-        public static function get($params)
+        public static function get($params = array())
         {
             //empty handler
             return null;
         }
 
-        public static function post($params)
+        public static function post($params = array())
         {    
             //conditions for validate       
             $conditions = array(

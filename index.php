@@ -11,11 +11,12 @@
     require_once(realpath($config["paths"]["controller"] . "/LoginController.php"));
     require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
     require_once(realpath($config["paths"]["controller"] . "/ApiController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/AreaController.php"));
 
     //start session, if needed
     new SessionHelper();
   
-    //get db-helper / establish connection
+    //get db-helper / establish connection, check if db-server is reachable
     $dbHelper = new DBHelper(); 
 
     //start router
@@ -25,12 +26,7 @@
     $router->get('/', function ($request) {
         $sessionHelper = new SessionHelper();
         if ($sessionHelper->checkLogin()) {
-            echo "Login successful";
-            echo "<br/>" . $_SESSION["USER_TOKEN"];
-            echo "<br/>" . $_SESSION["USER_ID"];
-            echo "<br/>" . $_SESSION["USER_NAME"];
-            echo "<br/>" . $_SESSION["USER_PRENAME"];
-            echo "<br/>" . $_SESSION["USER_EMAIL"];
+            header("Location: /areas");
         } else {
             LoginController::get(array());
         }
@@ -54,6 +50,16 @@
         RegisterController::post($params);        
     });
 
+    //get-handler for areas site
+    $router->get('/areas', function ($request) {
+        $sessionHelper = new SessionHelper();
+        if ($sessionHelper->checkLogin()) {
+            AreaController::get();
+        } else {
+            header("Location: /");
+        }
+    });
+
     //post handler for api calls to checkmail
     $router->post('/api/checkmail', function ($request) {
         $params = $request->getBody();
@@ -62,5 +68,5 @@
 
     $router->get('/test', function ($request) {
         echo "test";
-    });     
+    });    
 ?>

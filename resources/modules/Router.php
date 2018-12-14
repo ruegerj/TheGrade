@@ -53,7 +53,7 @@
         }
 
         /**
-        * Resolves a route
+        * Resolves a route, calls the given callback
         */
         function resolve()
         {

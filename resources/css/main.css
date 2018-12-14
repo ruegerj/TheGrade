@@ -18,3 +18,12 @@
     -o-background-size: cover;
     margin:-5px;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.link-btn {
+    cursor: pointer;
+    text-decoration: none !important;
+}
