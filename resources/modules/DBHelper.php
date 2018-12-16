@@ -12,6 +12,7 @@
             $this->establishConnection();
         }
 
+        //connect to db
         private function establishConnection()
         {
             $host = $GLOBALS["config"]["db"]["host"];
@@ -26,6 +27,58 @@
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
                 die();
             }       
+        }
+
+        //connect to db-server
+        private static function establishConnectionToServer()
+        {
+            $host = $GLOBALS["config"]["db"]["host"];
+            $username = $GLOBALS["config"]["db"]["username"];
+            $password = $GLOBALS["config"]["db"]["password"];
+            try {
+                return new PDO("mysql:charset=utf8mb4;host=" . $host . ";", $username, $password);
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+            }
+        }
+
+        /**
+         * Checks if the sceified DB from the config exists already
+         */
+        public static function checkDBExists()
+        {            
+            try {
+                $dbName = $GLOBALS["config"]["db"]["dbname"]; //try connect to server
+                $pdoConnection = DBHelper::establishConnectionToServer();
+                $statement = $pdoConnection->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :dbName");
+                $statement->execute(array(":dbName" => $dbName));
+                $dbCount = $statement->rowCount(); //get the count of databases with the same name on the mysql server
+                if ($dbCount > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+            }  
+        }
+
+        /**
+         * sets up the database and the application-user for the Grade
+         * @param $dbSql content of sql backup-script from db
+         * @param $userSql content of sql script wich creates the application user
+         */
+        public static function setUpDB($dbSql, $userSql)
+        {
+            try {
+                $pdoConnection = DBHelper::establishConnectionToServer();
+                $createDbStatement = $pdoConnection->prepare($dbSql);
+                $createDbStatement->execute(); //create db
+                $createUserStatement = $pdoConnection->prepare($userSql);
+                $createUserStatement->execute(); // create user
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+            }
         }
 
         /**

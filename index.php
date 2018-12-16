@@ -8,6 +8,7 @@
     require_once(realpath($config["paths"]["resources"]["module"] . "/DBHelper.php"));
     require_once(realpath($config["paths"]["resources"]["module"] . "/HashHelper.php"));
     require_once(realpath($config["paths"]["resources"]["module"] . "/TemplateHelper.php"));
+    require_once(realpath($config["paths"]["resources"]["module"] . "/InstallationHelper.php"));
     require_once(realpath($config["paths"]["controller"] . "/LoginController.php"));
     require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
     require_once(realpath($config["paths"]["controller"] . "/ApiController.php"));
@@ -15,6 +16,9 @@
 
     //start session, if needed
     new SessionHelper();
+
+    //set up db if necessary
+    new InstallationHelper();
   
     //get db-helper / establish connection, check if db-server is reachable
     $dbHelper = new DBHelper(); 
@@ -68,5 +72,9 @@
 
     $router->get('/test', function ($request) {
         echo "test";
-    });    
+    });      
+
+    $router->get('/file', function ($request) {
+        new InstallationHelper();
+    });
 ?>

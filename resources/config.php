@@ -3,8 +3,8 @@
     $config = array(
         "db" => array(
             "dbname" => "thegradedb",
-            "username" => "gradr",
-            "password" => "ThEgRadEaccEss27",
+            "username" => "test", //"gradr",
+            "password" => "123456789", //"ThEgRadEaccEss27",
             "host" => "localhost:3306"
         ),
         "urls" => array(
@@ -12,6 +12,7 @@
         ),
         "paths" => array(
             "resources" => array(
+                "backup" => $documentRoot . "/resources/backup",
                 "class" => $documentRoot . "/resources/classes",
                 "interface" => $documentRoot . "/resources/interfaces",
                 "module" => $documentRoot . "/resources/modules",
