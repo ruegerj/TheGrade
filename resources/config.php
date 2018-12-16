@@ -3,9 +3,11 @@
     $config = array(
         "db" => array(
             "dbname" => "thegradedb",
-            "username" => "test", //"gradr",
-            "password" => "123456789", //"ThEgRadEaccEss27",
-            "host" => "localhost:3306"
+            "username" => "gradr",
+            "password" => "ThEgRadEaccEss27",
+            "host" => "localhost",
+            "rootUser" => "root",
+            "rootPassword" => ""
         ),
         "urls" => array(
             "baseUrl" => "localhost"

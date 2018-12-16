@@ -27,20 +27,7 @@
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
                 die();
             }       
-        }
-
-        //connect to db-server
-        private static function establishConnectionToServer()
-        {
-            $host = $GLOBALS["config"]["db"]["host"];
-            $username = $GLOBALS["config"]["db"]["username"];
-            $password = $GLOBALS["config"]["db"]["password"];
-            try {
-                return new PDO("mysql:charset=utf8mb4;host=" . $host . ";", $username, $password);
-            } catch (Exception $ex) {
-                TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
-            }
-        }
+        }        
 
         /**
          * Checks if the sceified DB from the config exists already
@@ -48,8 +35,11 @@
         public static function checkDBExists()
         {            
             try {
-                $dbName = $GLOBALS["config"]["db"]["dbname"]; //try connect to server
-                $pdoConnection = DBHelper::establishConnectionToServer();
+                $host = $GLOBALS["config"]["db"]["host"];
+                $dbName = $GLOBALS["config"]["db"]["dbname"];     
+                $rootUser = $GLOBALS["config"]["db"]["rootUser"];
+                $rootPassword = $GLOBALS["config"]["db"]["rootPassword"];           
+                $pdoConnection = new PDO("mysql:charsetutf8mb4;host" . $host . ";", $rootUser, $rootPassword); //try connect to server
                 $statement = $pdoConnection->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :dbName");
                 $statement->execute(array(":dbName" => $dbName));
                 $dbCount = $statement->rowCount(); //get the count of databases with the same name on the mysql server
@@ -60,6 +50,7 @@
                 }
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+                die();
             }  
         }
 
@@ -71,13 +62,23 @@
         public static function setUpDB($dbSql, $userSql)
         {
             try {
-                $pdoConnection = DBHelper::establishConnectionToServer();
-                $createDbStatement = $pdoConnection->prepare($dbSql);
-                $createDbStatement->execute(); //create db
+                $host = $GLOBALS["config"]["db"]["host"];
+                $rootUser = $GLOBALS["config"]["db"]["rootUser"];
+                $rootPassword = $GLOBALS["config"]["db"]["rootPassword"];
+                //application-user doesn't exist yet => use root instead
+                $pdoConnection = new PDO("mysql:host=" . $host . ";", $rootUser, $rootPassword); 
+                $createDBStatement = $pdoConnection->prepare($dbSql); 
+                $createDBStatement->execute(); //create db       
+                $pdoConnection = null; //close connection
+                //create new connection to ensure the context "knows" the created db
+                //else the db is "unknown" to the context and the statement would complete with errors => user wont be created
+                $pdoConnection = new PDO("mysql:host=" . $host . ";", $rootUser, $rootPassword);                 
                 $createUserStatement = $pdoConnection->prepare($userSql);
-                $createUserStatement->execute(); // create user
+                $createUserStatement->execute();//create user
+                $pdoConnection = null; //close connection
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+                die();
             }
         }
 
@@ -97,6 +98,7 @@
                 return $this->getUserById($newId = $pdo->lastInsertId());            
             } catch (PDOException $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
+                die();
             }
         }
 
@@ -115,6 +117,7 @@
                 return new User($Id, $Name, $Prename, $Email, $Password);                                 
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
             }
         }    
 
@@ -137,6 +140,7 @@
                 }
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
             }
         }
         
@@ -158,6 +162,7 @@
                 return $emailsFound;
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
             }
         }
 
@@ -179,6 +184,7 @@
                 return $areas;
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
             }
 
         }

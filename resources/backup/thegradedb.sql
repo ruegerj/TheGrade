@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2018 at 05:55 PM
+-- Generation Time: Dec 16, 2018 at 08:07 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -17,6 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+
+CREATE DATABASE thegradedb;
+USE thegradedb;
 
 --
 -- Database: `thegradedb`
@@ -82,13 +85,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`Id`, `Name`, `Prename`, `Email`, `Password`) VALUES
-(13, 'Rüger', 'Jan', 'jan.rueger@gmx.ch', '$argon2i$v=19$m=1024,t=2,p=2$aGs2TXRlcFFHQmtLeHBzOA$TZVd/kvwX/lzzC/Taqri1angMO0BYP1NBtASrmH9iAg');
-
---
 -- Indexes for dumped tables
 --
 
@@ -145,7 +141,7 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
