@@ -7,7 +7,7 @@
          * checks if an email is still available / returns results json
          * @param $email requested email of user
          */
-        public static function checkEmailAvailable($email)        
+        public static function checkEmailAvailable($email) : void       
         {            
             $emailCondition = "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/";
             if (isset($email) && preg_match($emailCondition, $email)) {

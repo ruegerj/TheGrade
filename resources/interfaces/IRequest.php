@@ -1,7 +1,6 @@
 <?
     interface IRequest
     {
-        public function getBody();
+        public function getBody() : array;
     }
-
 ?>

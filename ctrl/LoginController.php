@@ -5,24 +5,18 @@
 
     class LoginController implements IController
     {
-       public static function get($params = array())
+       public static function get($params = array()) : void
        {
             $sessionHelper = new SessionHelper();
             $token = $sessionHelper->generateAntiForgeryToken();
             TemplateHelper::renderFileInTemplate("LoginView.php", false, array($params, "title" => "Welcome", "afToken" => $token));            
        }    
 
-       public static function post($params = array())
+       public static function post($params = array()) : void
        {
-            $conditions = array(
-                "email" => "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/",
-                "password" => array(
-                    "min" => 8,
-                    "max" => 50
-                )
-            );
+            $conditions = $GLOBALS["config"]["validate"];
 
-            $emailCondition = $conditions["email"];
+            $emailCondition = $conditions["email"]["pattern"];
             extract($params); //store array values in variables
             if (isset($emailLogin) && isset($passwordLogin) && isset($aftoken)) {
                 $sessionHelper = new SessionHelper();
@@ -35,7 +29,7 @@
                     if (isset($user)) {
                         $passwordMatch = password_verify($passwordLogin, $user->Password);
                         if ($passwordMatch === true) {
-                            $sessionHelper->LoginUser($user);
+                            $sessionHelper->loginUser($user);
                         } else {
                             header("Location: /"); //redirect to index                                
                         }

@@ -32,7 +32,7 @@
         * Removes trailing forward slashes from the right of the route.
         * @param route (string)
         */
-        private function formatRoute($route) 
+        private function formatRoute($route) : string
         {
             $result = rtrim($route, "/");
             if ($result === "") {
@@ -42,12 +42,12 @@
             return $result;
         }
 
-        private function invalidMethodHandler()
+        private function invalidMethodHandler() : void
         {
             TemplateHelper::renderErrorPage("405", "Method is not allowed", "Requested HTTp-MEthod is not allowed");
         }
 
-        private function defaultRequestHandler()
+        private function defaultRequestHandler() : void
         {
             TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File not found");            
         }
@@ -55,7 +55,7 @@
         /**
         * Resolves a route, calls the given callback
         */
-        function resolve()
+        function resolve() : void
         {
             $methodDictionary = $this->{strtolower($this->request->requestMethod)};
             $formatedRoute = $this->formatRoute($this->request->requestUri);            

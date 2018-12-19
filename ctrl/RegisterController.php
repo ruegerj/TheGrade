@@ -7,30 +7,14 @@
 
     class RegisterController implements IController
     {
-        public static function get($params = array())
-        {
-            //empty handler
-            return null;
+        public static function get($params = array()) : void
+        {            
+            //emtpy handler
         }
 
-        public static function post($params = array())
+        public static function post($params = array()) : void
         {    
-            //conditions for validate       
-            $conditions = array(
-                "name" => array(
-                    "min" => 3,
-                    "max" => 30
-                ),        
-                "prename" => array(
-                    "min" => 3,
-                    "max" => 30
-                ),
-                "email" => "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/",
-                "password" => array(
-                    "min" => 8,
-                    "max" => 50
-                )
-            );
+            $conditions = $GLOBALS["config"]["validate"]; //get validate conditions from config
             
             //trim user input
             foreach ($params as $key => $value) {
@@ -53,13 +37,13 @@
                 //check if data is valid with conditions              
                 if ($forgeryTokenValid === true && (strlen($name) >= $conditions["name"]["min"] && strlen($name) <= $conditions["name"]["max"])
                     && (strlen($prename) >= $conditions["prename"]["min"] && strlen($prename) <= $conditions["prename"]["max"])
-                    && (preg_match($conditions["email"], $email) && $matchingMailsCount <= 0) && (strlen($password) >= $conditions["password"]["min"] && strlen($password) <= $conditions["password"]["max"])
-                    && $password === $passwordConfirm) 
+                    && (preg_match($conditions["email"]["pattern"], $email) && $matchingMailsCount <= 0) && (strlen($password) >= $conditions["password"]["min"] 
+                    && strlen($password) <= $conditions["password"]["max"]) && $password === $passwordConfirm) 
                 {
                     $hashedPassword = HashHelper::generateHash($password);
                     $dbHelper = new DBHelper();                    
                     $createdUser = $dbHelper->addUser($name, $prename, $email, $hashedPassword); 
-                    $sessionHelper->LoginUser($createdUser);
+                    $sessionHelper->loginUser($createdUser);
 
                 } else {
                     header("Location: " . $_SERVER["HTTP_REFERER"]);                    

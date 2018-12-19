@@ -8,7 +8,8 @@
             $this->setUp();
         }
 
-        private function setUp()
+        //sets up, if its necessary, the db and the application-user
+        private function setUp() : void
         {
             if (DBHelper::checkDBExists() == false) {
                 $dbSql = $this->getDBCreationScript();
@@ -17,7 +18,8 @@
             }
         }
 
-        private function getDBCreationScript()
+        //gets the sql-code from the generated backup-script of the db
+        private function getDBCreationScript() : string
         {
             $dbName = $GLOBALS["config"]["db"]["dbname"];
             $filePath = $GLOBALS["config"]["paths"]["resources"]["backup"] . "/" . strtolower($dbName) . ".sql";
@@ -28,7 +30,8 @@
             }
         }
 
-        private function generateUserScript()
+        //generates based on the data from the config the sql-syntax to create the application user
+        private function generateUserScript() : string
         {
             $host = $GLOBALS["config"]["db"]["host"];
             $dbName = $GLOBALS["config"]["db"]["dbname"];

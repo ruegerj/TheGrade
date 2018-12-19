@@ -9,14 +9,14 @@
 
         function __construct()
         {
-            $this->checkSession(); // start session if required
-            $this->checkLoginState(); // check last activity of user
+            $this->startSession(); // start session if required
+            $this->checkLastActivity(); // check last activity of user
             $this->registerActivity(); // register activity
         }
         /**
          * Starts session when not started yet          
          */
-        private function checkSession()
+        private function startSession() : void
         {
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
@@ -27,7 +27,7 @@
          * checks if login-state is valid  (time since last activity)
          * logs user out when login-state is invalid (time is overdone)
          */
-        private function checkLoginState()
+        private function checkLastActivity() : void
         {
             if (isset($_SESSION[$GLOBALS["config"]["session"]["activity"]])) {
                 $sessionUnix = $_SESSION[$GLOBALS["config"]["session"]["activity"]];
@@ -46,7 +46,7 @@
          * registers an site-request and stores the time of the request in session
          * => changes login-state
          */
-        private function registerActivity()
+        private function registerActivity() : void
         {
             $_SESSION[$GLOBALS["config"]["session"]["activity"]] = time();
         }
@@ -54,7 +54,7 @@
         /**
          * checks if the user is logged in => token in session
          */
-        public function checkLogin()
+        public function checkLogin() : bool
         {
             if (isset($_SESSION[$GLOBALS["config"]["session"]["user"]])) {             
                 return true;
@@ -68,9 +68,8 @@
          * creates token for user (logged in) and stores data in session / redirect to index
          * @param $user user-object
          */
-        public function LoginUser(User $user)
+        public function loginUser(User $user) : void
         {
-            echo "loggin in..";
             $userToken = HashHelper::generateToken(array($user->Id, $user->Name, $user->Prename, $user->Email));            
             $_SESSION[$GLOBALS["config"]["session"]["user"]] = $userToken;                        
             $_SESSION[$GLOBALS["config"]["session"]["id"]] = $user->Id;
@@ -83,7 +82,7 @@
         /**
          * Destroys the session completely
          */
-        public function LogoutUser()
+        public function logoutUser() : void
         {
             $_SESSION = array(); // emtpy session
             if (ini_get("session.use_cookies")) {
@@ -95,7 +94,7 @@
                 );
             }
             //destroy session
-            session_destroy();
+            session_destroy();                        
             header("Location: /"); //redirect to index
         }        
 
@@ -103,7 +102,7 @@
          * Generates and stores a AntiForgeryToken in session
          * @param $adress request url (optional)
          */
-        public function generateAntiForgeryToken($adress = "undefined")
+        public function generateAntiForgeryToken($adress = "undefined") : string
         {
             $random = mt_rand(1, 100000000);
             $token = HashHelper::generateToken(array($adress, $random));
@@ -115,7 +114,7 @@
          * Checks if the token and the token from the session match
          * @param $token token from view
          */
-        public function checkAntiforgeryToken($token)
+        public function checkAntiforgeryToken($token) : bool
         {
             $sessionToken = $_SESSION[$GLOBALS["config"]["session"]["forgery"]];           
             return $token === $sessionToken;
@@ -124,7 +123,7 @@
         /**
          * gets the session-data and returns it as object
          */
-        public function getSessionData()
+        public function getSessionData() : Session
         {
             $sessionData = new Session();
             $sessionData->UserToken = $_SESSION[$GLOBALS["config"]["session"]["user"]];

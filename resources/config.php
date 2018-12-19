@@ -6,6 +6,7 @@
             "username" => "gradr",
             "password" => "ThEgRadEaccEss27",
             "host" => "localhost",
+            //root account is used to connect to the db-server for the first time to set up the database
             "rootUser" => "root",
             "rootPassword" => ""
         ),
@@ -31,6 +32,23 @@
             "prename" => "USER_PRENAME",
             "email" => "USER_EMAIL",
             "activity" => "USER_LAST_ACTIVITY"
+        ),
+        "validate" => array(
+            "email" => array(
+                "pattern" => "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/",                
+            ),
+            "name" => array(
+                "max" => 30,
+                "min" => 3
+            ),
+            "prename" => array(
+                "max" => 30,
+                "min" => 3
+            ),
+            "password" => array(
+                "max" => 50,
+                "min" => 8
+            )
         )   
     );
 

@@ -11,7 +11,7 @@
         }
 
         //creates for each key in $_SERVER a property in this class and stores the value
-        private function bootstrapSelf() 
+        private function bootstrapSelf() : void
         {
             foreach ($_SERVER as $key => $value) {
                 //take only the uri without the params => to enter the request handler properly
@@ -23,7 +23,7 @@
         }
 
         //converts a string from snake case to camel case
-        private function toCamelCase($string) 
+        private function toCamelCase($string) : string 
         {
             $result = strtolower($string);
             preg_match_all('/_[a-z]/', $result, $matches);
@@ -39,7 +39,7 @@
         /**
          * gets the given arguments of the request based on the request-methods
          **/
-        public function getBody()
+        public function getBody() : array
         {
             if ($this->requestMethod == "GET") {
                 $result = array();                

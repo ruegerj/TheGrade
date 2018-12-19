@@ -13,7 +13,7 @@
         }
 
         //connect to db
-        private function establishConnection()
+        private function establishConnection() : void
         {
             $host = $GLOBALS["config"]["db"]["host"];
             $dbName = $GLOBALS["config"]["db"]["dbname"];
@@ -32,7 +32,7 @@
         /**
          * Checks if the sceified DB from the config exists already
          */
-        public static function checkDBExists()
+        public static function checkDBExists() : bool
         {            
             try {
                 $host = $GLOBALS["config"]["db"]["host"];
@@ -40,6 +40,7 @@
                 $rootUser = $GLOBALS["config"]["db"]["rootUser"];
                 $rootPassword = $GLOBALS["config"]["db"]["rootPassword"];           
                 $pdoConnection = new PDO("mysql:charsetutf8mb4;host" . $host . ";", $rootUser, $rootPassword); //try connect to server
+                $pdoConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                 $statement = $pdoConnection->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :dbName");
                 $statement->execute(array(":dbName" => $dbName));
                 $dbCount = $statement->rowCount(); //get the count of databases with the same name on the mysql server
@@ -59,7 +60,7 @@
          * @param $dbSql content of sql backup-script from db
          * @param $userSql content of sql script wich creates the application user
          */
-        public static function setUpDB($dbSql, $userSql)
+        public static function setUpDB($dbSql, $userSql) : void
         {
             try {
                 $host = $GLOBALS["config"]["db"]["host"];
@@ -67,12 +68,14 @@
                 $rootPassword = $GLOBALS["config"]["db"]["rootPassword"];
                 //application-user doesn't exist yet => use root instead
                 $pdoConnection = new PDO("mysql:host=" . $host . ";", $rootUser, $rootPassword); 
+                $pdoConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                 $createDBStatement = $pdoConnection->prepare($dbSql); 
                 $createDBStatement->execute(); //create db       
                 $pdoConnection = null; //close connection
                 //create new connection to ensure the context "knows" the created db
                 //else the db is "unknown" to the context and the statement would complete with errors => user wont be created
-                $pdoConnection = new PDO("mysql:host=" . $host . ";", $rootUser, $rootPassword);                 
+                $pdoConnection = new PDO("mysql:host=" . $host . ";", $rootUser, $rootPassword);   
+                $pdoConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );              
                 $createUserStatement = $pdoConnection->prepare($userSql);
                 $createUserStatement->execute();//create user
                 $pdoConnection = null; //close connection
@@ -89,7 +92,7 @@
          * @param $email email of user
          * @param $password password of user
          */
-        public function addUser($name, $prename, $email, $password)
+        public function addUser($name, $prename, $email, $password) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -99,6 +102,7 @@
             } catch (PDOException $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
                 die();
+                
             }
         }
 
@@ -106,7 +110,7 @@
          * gets an user by the id and returns a user object
          * @param $id id of requested user
          */
-        public function getUserById($id)
+        public function getUserById($id) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -125,7 +129,7 @@
          * gets an user by the email and returns an user object
          * @param $email email of requested user
          */
-        public function getUserByEmail($email)
+        public function getUserByEmail($email) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -148,7 +152,7 @@
          * gets all emails wich equals the given email
          * @param $email email to search
          */
-        public function getMatchingEmails($email)
+        public function getMatchingEmails($email) : array
         {
             try {
                 $pdo = $this->pdoConnection;                
@@ -170,7 +174,7 @@
          * gets all areas of a user
          * @param $userId id of a user
          */
-        public function getAllAreas($userId)
+        public function getAllAreas($userId) : array
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -189,7 +193,7 @@
 
         }
 
-        private function closeConnection()
+        private function closeConnection() : void
         {
             $this->pdoConnection = null; //destroy PDO object => connection will be closed automatically
         }

@@ -45,7 +45,7 @@
     //get-handler for logout
     $router->get('/logout', function ($request) {
         $sessionHelper = new SessionHelper();
-        $sessionHelper->LogoutUser();
+        $sessionHelper->logoutUser();
     });
 
     //post-handler for register
@@ -76,5 +76,9 @@
 
     $router->get('/file', function ($request) {
         new InstallationHelper();
+    });
+
+    $router->get('/php', function ($request) {
+        echo "Php is shit";
     });
 ?>
