@@ -9,7 +9,7 @@
          */
         public static function checkEmailAvailable($email) : void       
         {            
-            $emailCondition = "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/";
+            $emailCondition = $GLOBALS["config"]["validate"]["email"]["pattern"];
             if (isset($email) && preg_match($emailCondition, $email)) {
                 $dbHelper = new DBHelper();            
                 $matchingEmails = $dbHelper->getMatchingEmails($email);

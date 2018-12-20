@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
       <?
-        if (isset($title)) {
-          echo $title;
+        if (isset($data->Title)) {
+          echo $data->Title;
         } else {
           echo "The Grade";
         }
@@ -37,7 +37,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item d-flex flex-row justify-content-between">
-            <h5 class="m-0 font-weight-light pt-1 pb-1">Hello <? echo $sessionData->UserPrename . " " . $sessionData->UserName?></h5>   
+            <h5 class="m-0 font-weight-light pt-1 pb-1">Hello <? echo $data->SessionData->UserPrename . " " . $data->SessionData->UserName?></h5>   
             <div class="align-self-center pl-2 p-1 dropdown">
               <span class="clickable" data-toggle="dropdown">
                 <i class="fas fa-ellipsis-v"></i>
@@ -71,4 +71,4 @@
   </ol>
 </div>
 <? endif;?>
-<div class="container-fluid w-75 ">
+<div class="container container-sm mb-3 mt-3 w-75 ">

@@ -1,5 +1,5 @@
 <?
-    require_once(realpath(dirname(__FILE__) . "/resources/config.php"));
+    require_once(realpath($_SERVER["DOCUMENT_ROOT"] . "/resources/config.php"));
     $GLOBALS["config"] = $config; // store config in super global array
 
     require_once(realpath($config["paths"]["resources"]["class"] . "/Request.php"));
@@ -78,7 +78,7 @@
         new InstallationHelper();
     });
 
-    $router->get('/php', function ($request) {
-        echo "Php is shit";
+    $router->get('/laurin', function ($request) {
+        TemplateHelper::renderFileInTemplate("AreaView.php", true, array());
     });
 ?>
