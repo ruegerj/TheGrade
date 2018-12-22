@@ -19,3 +19,20 @@ These Commands aren't included by default when the script is generated.
 ------ CONFIGURATION ------
 All the configurations can be made in the config.php file. But please note this config is globaly used in the app.
 So changes in the config can cause major malfunctions in the application.
+
+------ THIRD PARTY LIBRARIES ------
+All rights reserved to the owners / creators of these libraries. The use of these libraries is inside the boundries 
+of their licenses.
+Libraries used:
+    Frontend: 
+        - Bootstrap v4.1 by Twitter / included via CDN
+            => https://getbootstrap.com/
+        - fontawesome Free v5.6.1 by Fonticons Inc. / included via CDN 
+            => https://fontawesome.com/
+        - jQuery v3.3.1 by The jQuery Foundation / included via CDN
+            => https://jquery.com/
+        - popper.js v1.14.3 by FEDERICO ZIVOLO & CONTRIBUTORS / included via CDN
+            => https://popper.js.org/
+    Backend:
+        - CryptoLib v1 by IcyApril / downloaded from GitHub
+            => https://github.com/IcyApril/CryptoLib

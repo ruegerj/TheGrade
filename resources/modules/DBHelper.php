@@ -2,6 +2,7 @@
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/User.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/Area.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/RememberMeToken.php"));
 
     class DBHelper 
     {
@@ -164,6 +165,42 @@
                     array_push($emailsFound, $Email);                    
                 }               
                 return $emailsFound;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * stores a RememberMeToken in db for the given user
+         * @param $userId id of user
+         * @param $token RememberMeToken object
+         */
+        public function storeRememberMeToken($userId, $token) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("INSERT INTO remembermetoken (Creation, Token, PrivateKey, UserId)" .
+                "VALUES (:creation, :token, :privateKey, :userId)");
+                $statement->execute(array(":creation" => $token->Creation, ":token" => $token->Token, ":privateKey" => $token->PrivateKey, ":userId" => $userId));                
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets the currently active rememberMeToken of the given user
+         * @param $userId id of user
+         */
+        public function getActiveRememberMeToken($userId) : RememberMeToken
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT * FROM remembermetoken WHERE UserId = :userId ORDER BY Creation DESC LIMIT 1");
+                $statement->execute(array(":userId" => $userId));
+                extract($statement->fetch(PDO::FETCH_ASSOC));
+                return new RememberMeToken($Id, $Creation, $Token, $PrivateKey, $userId);
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();

@@ -21,6 +21,9 @@
                 "module" => $documentRoot . "/resources/modules",
                 "template" => $documentRoot . "/resources/templates"
             ),
+            "lib" => array(
+                "crypto" => $documentRoot . "/resources/lib/CryptoLib-master/src"
+            ),         
             "controller" => $documentRoot . "/ctrl",
             "view" => $documentRoot . "/view"
         ), 
@@ -32,6 +35,9 @@
             "prename" => "USER_PRENAME",
             "email" => "USER_EMAIL",
             "activity" => "USER_LAST_ACTIVITY"
+        ),
+        "cookie" => array(
+            "remember" => "REMEBER_ME"
         ),
         "validate" => array(
             "email" => array(
@@ -48,6 +54,9 @@
             "password" => array(
                 "max" => 50,
                 "min" => 8
+            ),
+            "rememberMeCookie" => array(
+                "timespan" => 7 //in days
             )
         )   
     );

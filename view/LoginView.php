@@ -38,9 +38,14 @@
                 <div class="w-75 m-auto">
                     <form id="loginForm" class="mb-3" action="/login" method="post">
                         <input type="hidden" name="aftoken" value="<? echo $afToken ?>">
+                        <input type="hidden" name="rememberMe" value>
                         <hr class="w-100 border border-white mt-3 mb-3" />
                         <input class="form-control mb-3 border border-lg" type="email" name="emailLogin" placeholder="You're E-Mail">                                                              
                         <input class="form-control mb-3 border border-lg" type="password" name="passwordLogin" placeholder="You're Password">
+                        <div id="rememberContainer" class="d-flex flex-row clickable">
+                            <h5 class="m-0 font-weight-light pr-3">Remember me?</h5>
+                            <h5 class="m-0"><i id="rememberIcon" class="text-success fa"></i></h5>
+                        </div>                        
                         <hr class="w-100 border border-white mt-3 mb-3" />
                     </form>                
                     <div class="d-flex flex-row">
@@ -74,6 +79,18 @@
                 e.addEventListener('input', () => {
                     e.classList.remove(borderAlert);
                 });
+            });
+
+            document.getElementById('rememberContainer').addEventListener('click', () => {
+                let icon = document.getElementById('rememberIcon');
+                let hiddenRemember = document.querySelector('[name="rememberMe"]');
+                if (icon.classList.contains('fa-check-circle')) {
+                    icon.classList.remove('fa-check-circle');
+                    hiddenRemember.value = null;
+                } else {
+                    icon.classList.add('fa-check-circle');
+                    hiddenRemember.value = true;
+                }
             });
 
             $('[title]').tooltip();

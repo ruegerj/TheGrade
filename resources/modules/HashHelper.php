@@ -1,4 +1,6 @@
 <?
+    use IcyApril\CryptoLib;
+    
     class HashHelper
     {
         /**
@@ -28,6 +30,14 @@
             }
             $stringToHash . (string)time();
             return HashHelper::generateHash($stringToHash, true);
+        }
+
+        /**
+         * generates a random string with a length of 256 chars using CryptoLib
+         */
+        public static function generatePrivateKey() : string
+        {
+            return CryptoLib::randomString(256);            
         }
     }
 
