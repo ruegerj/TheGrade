@@ -7,10 +7,10 @@
         *    @param $renderDefault (bool)
         *    @param $variables (array:mixed)
         */
-        public static function renderFileInTemplate($contenFile, $renderDefault = true, $variables = array()) : void
+        public static function renderFileInTemplate(string $contenFileName, bool $renderDefault = true, array $variables = array()) : void
         {        
             //get config via $GLOBALS
-            $contentFilePath = $GLOBALS["config"]["paths"]["view"] . "/" . $contenFile;
+            $contentFilePath = $GLOBALS["config"]["paths"]["view"] . "/" . $contenFileName;
     
             //store vars in current scope
             if (count($variables) > 0)
@@ -35,12 +35,12 @@
                 
             } else {
                 //render error-page
-                TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File: " . $contenFile . " not found");
+                TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File: " . $contenFileName . " not found");
             }
     
         }
     
-        public static function renderErrorPage($code = "500", $message = "Something went wrong", $exception) : void
+        public static function renderErrorPage(string $code = "500", string $message = "Something went wrong", Exception $exception) : void
         {
             require_once(realpath($GLOBALS["config"]["paths"]["view"] . "/ErrorView.php"));
         }

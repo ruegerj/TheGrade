@@ -83,7 +83,7 @@
          * @param $user user-object
          * @param $createCookie should a remember me cookie be generated
          */
-        public function loginUser(User $user, $createCookie = null) : void
+        public function loginUser(User $user, bool $createCookie = null) : void
         {
             $userToken = HashHelper::generateToken(array($user->Id, $user->Name, $user->Prename, $user->Email));            
             $_SESSION[$GLOBALS["config"]["session"]["user"]] = $userToken;                        
@@ -121,7 +121,7 @@
          * Generates and stores a AntiForgeryToken in session
          * @param $adress request url (optional)
          */
-        public function generateAntiForgeryToken($adress = "undefined") : string
+        public function generateAntiForgeryToken(string $adress = "undefined") : string
         {
             $random = mt_rand(1, 100000000);
             $token = HashHelper::generateToken(array($adress, $random));
@@ -133,7 +133,7 @@
          * Checks if the token and the token from the session match
          * @param $token token from view
          */
-        public function checkAntiforgeryToken($token) : bool
+        public function checkAntiforgeryToken(string $token) : bool
         {
             $sessionToken = $_SESSION[$GLOBALS["config"]["session"]["forgery"]];           
             return $token === $sessionToken;
@@ -143,7 +143,7 @@
          * Checks if a with the given key exists
          * @param $cookieKey key of cookie to check
          */
-        public function checkCookieExists($cookieKey) : bool
+        public function checkCookieExists(string $cookieKey) : bool
         {            
             return isset($_COOKIE[$cookieKey]);                  
         }
@@ -174,7 +174,7 @@
          * validates the rememberMe-cookie and checks if its valid
          * @param $cookie rememberMe-cookie
          */
-        public function validateRememberMeCookie($cookie) : bool
+        public function validateRememberMeCookie(string $cookie) : bool
         {            
             $dbHelper = new DBHelper();
             list($userIdBase64, $token, $mac) = explode(":", $cookie);

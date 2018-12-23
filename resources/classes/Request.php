@@ -23,7 +23,7 @@
         }
 
         //converts a string from snake case to camel case
-        private function toCamelCase($string) : string 
+        private function toCamelCase(string $string) : string 
         {
             $result = strtolower($string);
             preg_match_all('/_[a-z]/', $result, $matches);

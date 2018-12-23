@@ -1,7 +1,7 @@
 <?
     class Area
     {
-        function __construct($id, $title, $description, $subjectAverage, $userId)
+        function __construct(int $id, string $title, string $description, float $subjectAverage, int $userId)
         {
             $this->$Id = $id;
             $this->$Title = $title;

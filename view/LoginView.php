@@ -43,7 +43,7 @@
                         <input class="form-control mb-3 border border-lg" type="email" name="emailLogin" placeholder="You're E-Mail">                                                              
                         <input class="form-control mb-3 border border-lg" type="password" name="passwordLogin" placeholder="You're Password">
                         <div id="rememberContainer" class="d-flex flex-row clickable">
-                            <h5 class="m-0 font-weight-light pr-3">Remember me?</h5>
+                            <h5 class="m-0 font-weight-light pr-3">Remember Me</h5>
                             <h5 class="m-0"><i id="rememberIcon" class="text-success fa"></i></h5>
                         </div>                        
                         <hr class="w-100 border border-white mt-3 mb-3" />

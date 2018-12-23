@@ -61,7 +61,7 @@
          * @param $dbSql content of sql backup-script from db
          * @param $userSql content of sql script wich creates the application user
          */
-        public static function setUpDB($dbSql, $userSql) : void
+        public static function setUpDB(string $dbSql, string $userSql) : void
         {
             try {
                 $host = $GLOBALS["config"]["db"]["host"];
@@ -93,7 +93,7 @@
          * @param $email email of user
          * @param $password password of user
          */
-        public function addUser($name, $prename, $email, $password) : User
+        public function addUser(string $name, string $prename, string $email, string $password) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -111,7 +111,7 @@
          * gets an user by the id and returns a user object
          * @param $id id of requested user
          */
-        public function getUserById($id) : User
+        public function getUserById(int $id) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -130,7 +130,7 @@
          * gets an user by the email and returns an user object
          * @param $email email of requested user
          */
-        public function getUserByEmail($email) : User
+        public function getUserByEmail(string $email) : User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -153,7 +153,7 @@
          * gets all emails wich equals the given email
          * @param $email email to search
          */
-        public function getMatchingEmails($email) : array
+        public function getMatchingEmails(string $email) : array
         {
             try {
                 $pdo = $this->pdoConnection;                
@@ -176,7 +176,7 @@
          * @param $userId id of user
          * @param $token RememberMeToken object
          */
-        public function storeRememberMeToken($userId, $token) : void
+        public function storeRememberMeToken(int $userId, RememberMeToken $token) : void
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -193,7 +193,7 @@
          * gets the currently active rememberMeToken of the given user
          * @param $userId id of user
          */
-        public function getActiveRememberMeToken($userId) : RememberMeToken
+        public function getActiveRememberMeToken(int $userId) : RememberMeToken
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -211,7 +211,7 @@
          * gets all areas of a user
          * @param $userId id of a user
          */
-        public function getAllAreas($userId) : array
+        public function getAllAreas(int $userId) : array
         {
             try {
                 $pdo = $this->pdoConnection;

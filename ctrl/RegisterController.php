@@ -7,12 +7,12 @@
 
     class RegisterController implements IController
     {
-        public static function get($params = array()) : void
+        public static function get(array $params = array()) : void
         {            
             //emtpy handler
         }
 
-        public static function post($params = array()) : void
+        public static function post(array $params = array()) : void
         {    
             $conditions = $GLOBALS["config"]["validate"]; //get validate conditions from config
             

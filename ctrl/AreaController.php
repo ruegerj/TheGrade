@@ -8,7 +8,7 @@
 
     class AreaController implements IController
     {
-        public static function get($params = array()) : void
+        public static function get(array $params = array()) : void
         {            
             $sessionHelper = new SessionHelper();
             $dbHelper = new DBHelper();
@@ -18,7 +18,7 @@
             TemplateHelper::renderFileInTemplate("AreaView.php", true, array("data" => $viewData));
         }
 
-        public static function post($params = array()) : void
+        public static function post(array $params = array()) : void
         {
 
         }

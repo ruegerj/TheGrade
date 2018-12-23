@@ -1,7 +1,7 @@
 <?
     class ViewData
     {
-        function __construct($title, $sessionObj, $data, $crumbs = null)
+        function __construct(string $title, Session $sessionObj, array $data, array $crumbs = null)
         {
             $this->Title = $title;
             $this->SessionData = $sessionObj;

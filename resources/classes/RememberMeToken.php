@@ -1,7 +1,7 @@
 <?
     class RememberMeToken
     {
-        function __construct($id, $creation, $token, $privateKey, $userId)
+        function __construct(int $id, int $creation, string $token, string $privateKey, int $userId)
         {
             $this->Id = $id;            
             $this->Creation = $creation;            

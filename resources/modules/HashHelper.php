@@ -8,7 +8,7 @@
          * @param $input input-string
          * @param $trim specifies if the hash-information should be removed
          */
-        public static function generateHash($input, $trim = false) : string
+        public static function generateHash(string $input, bool $trim = false) : string
         {
             $hash = password_hash($input, PASSWORD_ARGON2I);
             if ($trim === true) {
@@ -22,7 +22,7 @@
          * generates a token with given values
          * @param $values arguments too include in token
          */
-        public static function generateToken($values = array()) : string
+        public static function generateToken(array $values = array()) : string
         {        
             $stringToHash = ""; // string with the combined values including the current time stamp
             foreach ($values as $key => $value) {

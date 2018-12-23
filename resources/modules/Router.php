@@ -17,7 +17,7 @@
 
         //gets triggered if a undefined method gets called
         //with this behavour the router can be used with dynamic handlers (methods and callbacks)
-        function __call($name, $args)
+        function __call(string $name, array $args)
         {
             list($route, $method) = $args;
 
@@ -32,7 +32,7 @@
         * Removes trailing forward slashes from the right of the route.
         * @param route (string)
         */
-        private function formatRoute($route) : string
+        private function formatRoute(string $route) : string
         {
             $result = rtrim($route, "/");
             if ($result === "") {

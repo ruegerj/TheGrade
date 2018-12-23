@@ -1,7 +1,7 @@
 <?
     class Subject
     {
-        function __construct($id, $title, $description, $grading, $gradeAverage, $areaId)
+        function __construct(int $id, string $title, string $description, float $grading, float $gradeAverage, int $areaId)
         {
             $Id = $id;
             $Title = $title;

@@ -7,7 +7,7 @@
          * checks if an email is still available / returns results json
          * @param $email requested email of user
          */
-        public static function checkEmailAvailable($email) : void       
+        public static function checkEmailAvailable(string $email) : void       
         {            
             $emailCondition = $GLOBALS["config"]["validate"]["email"]["pattern"];
             if (isset($email) && preg_match($emailCondition, $email)) {

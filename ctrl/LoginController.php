@@ -5,14 +5,14 @@
 
     class LoginController implements IController
     {
-       public static function get($params = array()) : void
+       public static function get(array $params = array()) : void
        {
             $sessionHelper = new SessionHelper();
             $token = $sessionHelper->generateAntiForgeryToken();
             TemplateHelper::renderFileInTemplate("LoginView.php", false, array($params, "title" => "Welcome", "afToken" => $token));            
        }    
 
-       public static function post($params = array()) : void
+       public static function post(array $params = array()) : void
        {
             $conditions = $GLOBALS["config"]["validate"];
             $emailCondition = $conditions["email"]["pattern"];            

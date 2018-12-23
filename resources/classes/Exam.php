@@ -1,7 +1,7 @@
 <?
     class Exam
     {
-        function __construct($id, $title, $description, $grade, $grading, $subjectId)
+        function __construct(int $id, string $title, string $description, float $grade, float $grading, int $subjectId)
         {
             $this->$Id = $id;
             $this->$Title = $title;
