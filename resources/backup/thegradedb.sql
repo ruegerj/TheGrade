@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2018 at 08:07 PM
+-- Generation Time: Dec 23, 2018 at 01:56 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -18,12 +18,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE thegradedb;
-USE thegradedb;
-
 --
 -- Database: `thegradedb`
 --
+CREATE DATABASE IF NOT EXISTS `thegradedb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `thegradedb`;
 
 -- --------------------------------------------------------
 
@@ -53,6 +52,20 @@ CREATE TABLE `exam` (
   `Grade` float NOT NULL,
   `Grading` float NOT NULL COMMENT 'Factor of grading',
   `SubjectId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `remembermetoken`
+--
+
+CREATE TABLE `remembermetoken` (
+  `Id` int(11) NOT NULL,
+  `Creation` int(11) NOT NULL,
+  `Token` text NOT NULL,
+  `PrivateKey` text NOT NULL,
+  `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -103,6 +116,13 @@ ALTER TABLE `exam`
   ADD KEY `SubjectFK` (`SubjectId`);
 
 --
+-- Indexes for table `remembermetoken`
+--
+ALTER TABLE `remembermetoken`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `UserForeignKey` (`UserId`);
+
+--
 -- Indexes for table `subject`
 --
 ALTER TABLE `subject`
@@ -132,6 +152,12 @@ ALTER TABLE `exam`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `remembermetoken`
+--
+ALTER TABLE `remembermetoken`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
@@ -158,6 +184,12 @@ ALTER TABLE `area`
 --
 ALTER TABLE `exam`
   ADD CONSTRAINT `SubjectFK` FOREIGN KEY (`SubjectId`) REFERENCES `subject` (`Id`);
+
+--
+-- Constraints for table `remembermetoken`
+--
+ALTER TABLE `remembermetoken`
+  ADD CONSTRAINT `UserForeignKey` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`);
 
 --
 -- Constraints for table `subject`

@@ -71,4 +71,4 @@
   </ol>
 </div>
 <? endif;?>
-<div class="container container-sm mb-3 mt-3 w-75 ">
+<div class="container-fluid mb-3 mt-3 w-75 ">

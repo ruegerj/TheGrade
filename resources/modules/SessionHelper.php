@@ -181,8 +181,9 @@
             $userIdCookie = base64_decode($userIdBase64);
             $cookieDataFromDb = $dbHelper->getActiveRememberMeToken($userIdCookie);                      
             if ($cookieDataFromDb != null) {
+                //use hash_equals to prevent timing attacks
                 if (!hash_equals(hash_hmac("sha256", $userIdBase64 . ":" . $token, $cookieDataFromDb->PrivateKey), $mac)) {
-                    return false; //control hashes dont match so the cookie is invalid
+                    return false; //control hashes doesnt match so the cookie is invalid
                 } 
                 if (hash_equals($token, $cookieDataFromDb->Token)) {
                     $expiredSpan = $GLOBALS["config"]["validate"]["rememberMeCookie"]["timespan"];

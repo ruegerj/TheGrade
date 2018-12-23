@@ -18,10 +18,7 @@
     new SessionHelper();
 
     //set up db if necessary
-    new InstallationHelper();
-  
-    //get db-helper / establish connection, check if db-server is reachable
-    $dbHelper = new DBHelper(); 
+    new InstallationHelper();    
 
     //start router
     $router = new Router(new Request);    
@@ -68,17 +65,5 @@
     $router->post('/api/checkmail', function ($request) {
         $params = $request->getBody();
         ApiController::checkEmailAvailable($params["email"]);        
-    });
-
-    $router->get('/test', function ($request) {
-        echo "test";
-    });      
-
-    $router->get('/file', function ($request) {
-        new InstallationHelper();
-    });
-
-    $router->get('/laurin', function ($request) {
-        TemplateHelper::renderFileInTemplate("AreaView.php", true, array());
     });
 ?>

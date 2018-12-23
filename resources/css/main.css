@@ -23,6 +23,10 @@
     cursor: pointer;
 }
 
+.hoverable:hover {
+    background-color: rgb(216, 216, 216);
+}
+
 .link-btn {
     cursor: pointer;
     text-decoration: none !important;
