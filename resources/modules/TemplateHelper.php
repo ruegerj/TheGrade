@@ -40,7 +40,7 @@
     
         }
     
-        public static function renderErrorPage(string $code = "500", string $message = "Something went wrong", Exception $exception) : void
+        public static function renderErrorPage(string $code = "500", string $message = "Something went wrong", $exception) : void
         {
             require_once(realpath($GLOBALS["config"]["paths"]["view"] . "/ErrorView.php"));
         }

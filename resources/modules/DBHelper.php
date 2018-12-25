@@ -2,6 +2,8 @@
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/User.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/Area.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/Subject.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/Exam.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["class"] . "/RememberMeToken.php"));
 
     class DBHelper 
@@ -218,9 +220,9 @@
                 $statement = $pdo->prepare("SELECT area.Id, area.Title, area.Description, area.SubjectAverage FROM user INNER JOIN area ON user.Id = area.UserId WHERE user.Id = :userId");
                 $statement->execute(array(":userId" => $userId));
                 $areas = array();
-                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {                    
                     extract($row);
-                    array_push($areas, new Area($Id, $Title, $Description, $SubjectAverage, $userId));
+                    array_push($areas, new Area($Id, $Title, $Description, $SubjectAverage, $userId));                   
                 }
                 return $areas;
             } catch (Exception $ex) {
@@ -228,6 +230,141 @@
                 die();
             }
 
+        }
+
+        /**
+         * adds an area to a user
+         * @param $title title of area
+         * @param $description description of area
+         * @param $userId id of user
+         */
+        public function addArea(string $title, string $description, int $userId) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("INSERT INTO area (Title, Description, UserId) VALUES (:title, :description, :userId)");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":userId" => $userId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * updates the data of an area
+         * @param $areaId id of the area
+         * @param $title new title of the area
+         * @param $description new description off the area
+         */
+        public function updateArea(int $areaId,  string $title, string $description) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("UPDATE area SET Title = :title,  Description = :description WHERE Id = :areaId");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":areaId" => $areaId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * deletes an area including the atached subjects and their atached exams
+         * @param $areaId id of area
+         */
+        public function deleteArea(int $areaId) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $subjectsOfArea = $this->getAllSubjects($areaId); //get subjects of area
+                foreach ($subjectsOfArea as $subject) { //delete all subjects                    
+                    $this->deleteSubject($subject->Id);
+                }
+                $statement = $pdo->prepare("DELETE FROM area WHERE Id = :areaId");
+                $statement->execute(array(":areaId" => $areaId)); //delete area
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets all subjects of an area
+         * @param $areaId id of area
+         */
+        public function getAllSubjects(int $areaId) : array
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT subject.Id, subject.Title, subject.Description, subject.Grading, subject.GradeAverage, subject.AreaId FROM area INNER JOIN subject ON area.Id = subject.AreaId WHERE area.Id = :areaId");   
+                $statement->execute(array(":areaId" => $areaId));
+                $subjects = array();
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    array_push($subjects, new Subject($Id, $Title, $Description, $Grading, $GradeAverage, $AreaId));
+                }
+                return $subjects;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", var_dump($ex));
+                die();
+            }
+        }
+
+        /**
+         * deletes an subject including all atached exams
+         */
+        public function deleteSubject(int $subjectId) : void
+        {            
+            try {
+                $pdo = $this->pdoConnection;
+                $examsOfSubject = $this->getAllExams($subjectId); //get all exams of subject
+                foreach ($examsOfSubject as $exam) { //delete all exams
+                    $this->deleteExam($exam->Id);
+                }
+                $statement = $pdo->prepare("DELETE FROM subject WHERE Id = :subjectId");
+                $statement->execute(array(":subjectId" => $subjectId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets all exams of a subject
+         * @param $subject id of subject
+         */
+        public function getAllExams(int $subjectId) : array
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT exam.Id, exam.Title, exam.Description, exam.Date, exam.Grade, exam.Grading, exam.SubjectId FROM subject INNER JOIN exam ON subject.Id = exam.SubjectId WHERE subject.Id = :subjectId");
+                $statement->execute(array(":subjectId" => $subjectId));
+                $exams = array();
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    array_push($exams, new Exam($Id, $Title, $Description, $Grade, $Grading, $SubjectId));
+                }
+                return $exams;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * deletes an exam
+         * @param $examId id of exam
+         */
+        public function deleteExam(int $examId) : void
+        {            
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("DELETE FROM exam WHERE Id = :examId");
+                $statement->execute(array(":examId" => $examId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
         }
 
         private function closeConnection() : void

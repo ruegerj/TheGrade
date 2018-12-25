@@ -13,6 +13,7 @@
     require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
     require_once(realpath($config["paths"]["controller"] . "/ApiController.php"));
     require_once(realpath($config["paths"]["controller"] . "/AreaController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/AreaCRUDController.php"));
 
     //start session, if needed
     new SessionHelper();
@@ -58,6 +59,36 @@
             AreaController::get();
         } else {
             header("Location: /");
+        }
+    });
+
+    //post-handler for adding an area
+    $router->post('/area-add', function ($request) {
+        $sessionHelper = new SessionHelper();
+        if ($sessionHelper->checkLogin()) {
+            AreaCRUDController::add($request->getBody());
+        } else {
+            LoginController::get(array());
+        }
+    });
+
+    //post-handler for editing area
+    $router->post('/area-edit', function ($request) {
+        $sessionHelper = new SessionHelper();
+        if ($sessionHelper->checkLogin()) {
+            AreaCRUDController::update($request->getBody());
+        } else {
+            LoginController::get(array());
+        }
+    });
+
+    //post-handler for deleting an area
+    $router->post('/area-del', function ($request) {
+        $sessionHelper = new SessionHelper();
+        if ($sessionHelper->checkLogin()) {
+            AreaCRUDController::delete($request->getBody());
+        } else {
+            LoginController::get(array());
         }
     });
 

@@ -24,7 +24,13 @@
 }
 
 .hoverable:hover {
-    background-color: rgb(216, 216, 216);
+    background-color: rgb(235, 235, 235);
+}
+
+.overflow {
+    overflow: hidden !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-all !important;
 }
 
 .link-btn {

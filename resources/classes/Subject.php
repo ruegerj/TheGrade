@@ -3,12 +3,12 @@
     {
         function __construct(int $id, string $title, string $description, float $grading, float $gradeAverage, int $areaId)
         {
-            $Id = $id;
-            $Title = $title;
-            $Description = $description;
-            $Grading = $grading;
-            $GradeAverage = $gradeAverage;
-            $AreaId = $areaId;
+            $this->Id = $id;
+            $this->Title = $title;
+            $this->Description = $description;
+            $this->Grading = $grading;
+            $this->GradeAverage = $gradeAverage;
+            $this->AreaId = $areaId;
         }
 
         public $Id;

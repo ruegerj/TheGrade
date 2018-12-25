@@ -30,17 +30,20 @@
          */
         private function checkLastActivity() : void
         {
-            if (isset($_SESSION[$GLOBALS["config"]["session"]["activity"]])) {
-                $sessionUnix = $_SESSION[$GLOBALS["config"]["session"]["activity"]];
-                $currentUnix = time();                                
-                //check if unix from session + $loginStateTime is in the past
-                if ((($sessionUnix += ($this->loginStateTime * 60)) <= $currentUnix )) {
-                    $this->LogoutUser();                  
-                    die();
-                }           
-            } else {
-                $this->registerActivity();
-            }
+            //just check for last activity when the remember me cookie isnt set
+            //else the remember me cookie is useless because it will be destroyed 
+            //after 30 minutes with no activity anyway
+            if (!$this->checkCookieExists($GLOBALS["config"]["cookie"]["remember"])) {
+                if (isset($_SESSION[$GLOBALS["config"]["session"]["activity"]])) {
+                    $sessionUnix = $_SESSION[$GLOBALS["config"]["session"]["activity"]];
+                    $currentUnix = time();                                
+                    //check if unix from session + $loginStateTime is in the past
+                    if ((($sessionUnix += ($this->loginStateTime * 60)) <= $currentUnix )) {
+                        $this->LogoutUser();                  
+                        die();
+                    }           
+                }
+            } 
         }
 
         /**

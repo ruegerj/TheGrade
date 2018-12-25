@@ -34,7 +34,7 @@
             "name" => "USER_NAME",
             "prename" => "USER_PRENAME",
             "email" => "USER_EMAIL",
-            "activity" => "USER_LAST_ACTIVITY"
+            "activity" => "USER_LAST_ACTIVITY"      
         ),
         "cookie" => array(
             "remember" => "REMEBER_ME"
@@ -54,6 +54,14 @@
             "password" => array(
                 "max" => 50,
                 "min" => 8
+            ),   
+            "title" => array(
+                "max" => 50,
+                "min" => 1
+            ),
+            "description" => array(
+                "max" => 750,
+                "min" => 0
             ),
             "rememberMeCookie" => array(
                 "timespan" => 7 //in days
