@@ -9,11 +9,14 @@
     require_once(realpath($config["paths"]["resources"]["module"] . "/HashHelper.php"));
     require_once(realpath($config["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($config["paths"]["resources"]["module"] . "/InstallationHelper.php"));
+    require_once(realpath($config["paths"]["resources"]["module"] . "/PossessionHelper.php"));
     require_once(realpath($config["paths"]["controller"] . "/LoginController.php"));
     require_once(realpath($config["paths"]["controller"] . "/RegisterController.php"));
     require_once(realpath($config["paths"]["controller"] . "/ApiController.php"));
     require_once(realpath($config["paths"]["controller"] . "/AreaController.php"));
     require_once(realpath($config["paths"]["controller"] . "/AreaCRUDController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/SubjectController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/SubjectCRUDController.php"));
 
     //start session, if needed
     new SessionHelper();
@@ -26,12 +29,8 @@
 
     //get-handler for index/login page
     $router->get('/', function ($request) {
-        $sessionHelper = new SessionHelper();
-        if ($sessionHelper->checkLogin()) {
-            header("Location: /areas");
-        } else {
-            LoginController::get(array());
-        }
+       authenticate();
+       header("Location: /areas");
     });
 
     //post-handler for login
@@ -52,44 +51,57 @@
         RegisterController::post($params);        
     });
 
-    //get-handler for areas site
+    //get-handler for areas overview site
     $router->get('/areas', function ($request) {
-        $sessionHelper = new SessionHelper();
-        if ($sessionHelper->checkLogin()) {
-            AreaController::get();
-        } else {
-            header("Location: /");
-        }
+        authenticate();
+        AreaController::get();
     });
 
     //post-handler for adding an area
     $router->post('/area-add', function ($request) {
-        $sessionHelper = new SessionHelper();
-        if ($sessionHelper->checkLogin()) {
-            AreaCRUDController::add($request->getBody());
-        } else {
-            LoginController::get(array());
-        }
+        authenticate();
+        AreaCRUDController::add($request->getBody());
     });
 
     //post-handler for editing area
     $router->post('/area-edit', function ($request) {
-        $sessionHelper = new SessionHelper();
-        if ($sessionHelper->checkLogin()) {
-            AreaCRUDController::update($request->getBody());
-        } else {
-            LoginController::get(array());
-        }
+        authenticate();
+        AreaCRUDController::update($request->getBody());
     });
 
     //post-handler for deleting an area
     $router->post('/area-del', function ($request) {
-        $sessionHelper = new SessionHelper();
-        if ($sessionHelper->checkLogin()) {
-            AreaCRUDController::delete($request->getBody());
+        authenticate();
+        AreaCRUDController::delete($request->getBody());
+    });
+
+    //get-handler for the detail page of an area => with all subjects of area
+    $router->get('/area', function ($request) {
+        authenticate();
+        extract($request->getBody()); //get params
+        if (isset($id) && $id > 0) {
+            SubjectController::get(array("areaId" => $id));
         } else {
-            LoginController::get(array());
+            header("Location: /area"); //redirect to area overview
         }
+    });
+
+    //post-handler for adding a subject
+    $router->post('/subject-add', function ($request) {
+        authenticate();
+        SubjectCRUDController::add($request->getBody());
+    });
+
+    //post-handler for editing a subject
+    $router->post('/subject-edit', function ($request) {
+        authenticate();
+        SubjectCRUDController::update($request->getBody());
+    });
+
+    //post-handler for deleting a subject
+    $router->post('/subject-del', function ($request) {
+        authenticate();
+        SubjectCRUDController::delete($request->getBody());
     });
 
     //post handler for api calls to checkmail
@@ -97,4 +109,15 @@
         $params = $request->getBody();
         ApiController::checkEmailAvailable($params["email"]);        
     });
+
+    //checks if the current user is logged in
+    //else the default login page will be rendered
+    function authenticate()
+    {
+        $sessionHelper = new SessionHelper();
+        if (!$sessionHelper->checkLogin()) {
+            LoginController::get();
+            die();
+        }
+    }
 ?>

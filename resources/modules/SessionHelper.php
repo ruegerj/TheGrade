@@ -6,7 +6,7 @@
 
     class SessionHelper
     {       
-        private $loginStateTime = 30; //time (in minutes) for wich user is logged in without any activity
+         //time (in minutes) for wich user is logged in without any activity
 
         function __construct()
         {
@@ -35,10 +35,11 @@
             //after 30 minutes with no activity anyway
             if (!$this->checkCookieExists($GLOBALS["config"]["cookie"]["remember"])) {
                 if (isset($_SESSION[$GLOBALS["config"]["session"]["activity"]])) {
+                    $maxLogoutTime = $GLOBALS["config"]["autologout"]["time"];
                     $sessionUnix = $_SESSION[$GLOBALS["config"]["session"]["activity"]];
                     $currentUnix = time();                                
                     //check if unix from session + $loginStateTime is in the past
-                    if ((($sessionUnix += ($this->loginStateTime * 60)) <= $currentUnix )) {
+                    if ((($sessionUnix += ($maxLogoutTime * 60)) <= $currentUnix )) {
                         $this->LogoutUser();                  
                         die();
                     }           
@@ -53,7 +54,7 @@
         private function registerActivity() : void
         {
             $_SESSION[$GLOBALS["config"]["session"]["activity"]] = time();
-        }
+        }        
 
         /**
          * checks if the user is logged in => token in session or rememberMe-cookie is valid
@@ -121,8 +122,7 @@
         }        
 
         /**
-         * Generates and stores a AntiForgeryToken in session
-         * @param $adress request url (optional)
+         * Generates and stores a AntiForgeryToken in session 
          */
         public function generateAntiForgeryToken(string $adress = "undefined") : string
         {
@@ -190,7 +190,8 @@
                 } 
                 if (hash_equals($token, $cookieDataFromDb->Token)) {
                     $expiredSpan = $GLOBALS["config"]["validate"]["rememberMeCookie"]["timespan"];
-                    $cookieCreation = new DateTime($cookieDataFromDb->Creation);
+                    $cookieCreation = new DateTime();
+                    $cookieCreation->setTimestamp($cookieDataFromDb->Creation);
                     $expired = $cookieCreation->modify("+" . $expiredSpan ." day") < new DateTime();
                     if ($expired) {
                         return false; //token exists but is expired so its invalid

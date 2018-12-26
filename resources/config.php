@@ -39,6 +39,9 @@
         "cookie" => array(
             "remember" => "REMEBER_ME"
         ),
+        "autologout" => array(
+            "time" => 30
+        ),
         "validate" => array(
             "email" => array(
                 "pattern" => "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/",                
@@ -62,6 +65,10 @@
             "description" => array(
                 "max" => 750,
                 "min" => 0
+            ),
+            "grading" => array(
+                "max" => 500,
+                "min" => 1
             ),
             "rememberMeCookie" => array(
                 "timespan" => 7 //in days

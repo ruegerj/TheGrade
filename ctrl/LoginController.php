@@ -1,6 +1,7 @@
 <?
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/SessionHelper.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/FormatHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["interface"] . "/IController.php"));
 
     class LoginController implements IController
@@ -8,12 +9,13 @@
        public static function get(array $params = array()) : void
        {
             $sessionHelper = new SessionHelper();
-            $token = $sessionHelper->generateAntiForgeryToken();
+            $token = $sessionHelper->generateAntiForgeryToken("/");
             TemplateHelper::renderFileInTemplate("LoginView.php", false, array($params, "title" => "Welcome", "afToken" => $token));            
        }    
 
        public static function post(array $params = array()) : void
        {
+            $params = FormatHelper::sanitize($params); //sanitize user input
             $conditions = $GLOBALS["config"]["validate"];
             $emailCondition = $conditions["email"]["pattern"];            
             extract($params); //store array values in variables            

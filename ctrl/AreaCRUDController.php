@@ -3,6 +3,7 @@
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/SessionHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/DBHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/FormatHelper.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/PossessionHelper.php"));
 
     class AreaCRUDController implements ICRUDController
     {
@@ -34,7 +35,7 @@
             //validate user input
             if ($sessionHelper->checkAntiforgeryToken($aftoken) && isset($areaId) && $areaId > 0  && strlen($title) >= $conditionsTitle["min"]
                 && strlen($title) <= $conditionsTitle["max"] && strlen($description) <= $conditionsDescription["max"]) {
-                if (AreaCRUDController::isOwner($areaId)) {
+                if (PossessionHelper::isOwnerOfArea($areaId)) {
                     $dbHelper->updateArea($areaId, $title, $description);
                 }
             }
@@ -48,26 +49,11 @@
             extract($params);
             //validate user input
             if ($sessionHelper->checkAntiforgeryToken($aftoken) && isset($areaId) && $areaId > 0) {
-                if (AreaCRUDController::isOwner($areaId)) { //check if owner
+                if (PossessionHelper::isOwnerOfArea($areaId)) { //check if owner
                     $dbHelper->deleteArea($areaId);                   
                 }
             }
             header("Location: " . $_SERVER["HTTP_REFERER"]); //redirect to areas page
-        }
-
-        //checks if the requested area is owned by the current user
-        private static function isOwner(int $requestedAreaId) : bool
-        {
-            $sessionHelper = new SessionHelper();
-            $dbHelper = new DBHelper();
-            $sessionData = $sessionHelper->getSessionData();
-            $areasOfUser = $dbHelper->getAllAreas($sessionData->UserId);
-            foreach ($areasOfUser as $area) {
-                if ($area->Id === $requestedAreaId) {
-                   return true;
-                }
-            }
-            return false;
-        }
+        }        
     }    
 ?>

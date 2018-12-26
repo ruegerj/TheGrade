@@ -12,10 +12,10 @@
         {            
             $sessionHelper = new SessionHelper();
             $dbHelper = new DBHelper();
-            $sessionHelper->generateAntiForgeryToken();
+            $sessionHelper->generateAntiForgeryToken("/areas");
             $sessionData = $sessionHelper->getSessionData();
             $areas = $dbHelper->getAllAreas($sessionData->UserId);            
-            $viewData = new ViewData("Areas",$sessionData, $areas);
+            $viewData = new ViewData("Areas", $sessionData, $areas);
             TemplateHelper::renderFileInTemplate("AreaView.php", true, array("data" => $viewData));
         }
 

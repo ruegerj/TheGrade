@@ -113,15 +113,19 @@
          * gets an user by the id and returns a user object
          * @param $id id of requested user
          */
-        public function getUserById(int $id) : User
+        public function getUserById(int $id) : ?User
         {
             try {
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("SELECT * FROM user WHERE Id = :id");
                 $statement->execute(array(":id" => $id));
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
-                extract($result); // eg. turn $result["name"] into $name 
-                return new User($Id, $Name, $Prename, $Email, $Password);                                 
+                if ($statement->rowCount() > 0) {                    
+                    extract($result); // eg. turn $result["name"] into $name 
+                    return new User($Id, $Name, $Prename, $Email, $Password);                                 
+                } else {
+                    return null;
+                }
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();
@@ -132,7 +136,7 @@
          * gets an user by the email and returns an user object
          * @param $email email of requested user
          */
-        public function getUserByEmail(string $email) : User
+        public function getUserByEmail(string $email) : ?User
         {
             try {
                 $pdo = $this->pdoConnection;
@@ -195,14 +199,18 @@
          * gets the currently active rememberMeToken of the given user
          * @param $userId id of user
          */
-        public function getActiveRememberMeToken(int $userId) : RememberMeToken
+        public function getActiveRememberMeToken(int $userId) : ?RememberMeToken
         {
             try {
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("SELECT * FROM remembermetoken WHERE UserId = :userId ORDER BY Creation DESC LIMIT 1");
                 $statement->execute(array(":userId" => $userId));
-                extract($statement->fetch(PDO::FETCH_ASSOC));
-                return new RememberMeToken($Id, $Creation, $Token, $PrivateKey, $userId);
+                if ($statement->rowCount() > 0) {
+                    extract($statement->fetch(PDO::FETCH_ASSOC));
+                    return new RememberMeToken($Id, $Creation, $Token, $PrivateKey, $userId);                    
+                } else {
+                    return null;
+                }
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();
@@ -230,6 +238,28 @@
                 die();
             }
 
+        }
+
+        /**
+         * gets an area by the id
+         * @param $areaId id of area
+         */
+        public function getAreaById(int $areaId) : ?Area
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT * FROM area WHERE Id = :areaId");
+                $statement->execute(array(":areaId" => $areaId));
+                if ($statement->rowCount() > 0) {
+                    extract($statement->fetch(PDO::FETCH_ASSOC));
+                    return new Area($Id, $Title, $Description, $SubjectAverage, $UserId);
+                } else {
+                    return null;
+                }
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
         }
 
         /**
@@ -305,7 +335,67 @@
                 }
                 return $subjects;
             } catch (Exception $ex) {
-                TemplateHelper::renderErrorPage("500", "An error occured", var_dump($ex));
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets a subject by the id
+         * @param $subjectId id of subject
+         */
+        public function getSubjectById(int $subjectId) : ?Subject
+        {            
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT * FROM subject WHERE Id = :subjectId");
+                $statement->execute(array(":subjectId" => $subjectId));
+                if ($statement->rowCount() > 0) {
+                    extract($statement->fetch(PDO::FETCH_ASSOC));
+                    return new Subject($Id, $Title, $Description, $Grading, $GradeAverage, $AreaId);
+                } else {
+                    return null;
+                }
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * adds a subject to an area
+         * @param $areaId id of parent area
+         * @param $title title of subject
+         * @param $description description of subject
+         * @param $grading of subject as factor
+         */
+        public function addSubject(int $areaId, string $title, string $description, float $grading) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("INSERT INTO subject (Title, Description, Grading, AreaId) VALUES (:title, :description, :grading, :areaId)");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":grading" => $grading, "areaId" => $areaId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * updates the data of a subject
+         * @param $subjectId id of subject
+         * @param $title new title
+         * @param $description new description
+         * @param $grading new grading
+         */
+        public function updateSubject(int $subjectId, string $title, string $description, float $grading) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("UPDATE subject SET Title = :title, Description = :description, Grading = :grading WHERE Id = :subjectId");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":grading" => $grading, ":subjectId" => $subjectId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();
             }
         }
@@ -345,6 +435,28 @@
                     array_push($exams, new Exam($Id, $Title, $Description, $Grade, $Grading, $SubjectId));
                 }
                 return $exams;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets an exam by the id
+         * @param $examId id of exam
+         */
+        public function getExamById(int $examId) : ?Exam
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT * FROM exam WHERE Id = :examId");
+                $statement->execute(array(":examId" => $examId));
+                if ($statement->rowCount() > 0) {
+                    extract($statement->fetch(PDO::FETCH_ASSOC));
+                    return new Exam($Id, $Title, $Description, $Grade, $Grading, $SubjectId);
+                } else {
+                    return null;
+                }
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();

@@ -54,15 +54,16 @@
     </div>
   </nav>  
 </div>
-<? if (isset($crumbs)) :?>
+<? if (isset($data->Crumbs)) :?>
 <div class="container-fluid w-75 border-bottom pb-2">
   <ol class="breadcrumb bg-light mb-0 pt-2 pb-0">
     <?
+    $crumbs = $data->Crumbs;
       $crumbCount = count($crumbs) - 1;
       foreach ($crumbs as $key => $value) {
         $index = array_search($key, array_keys($crumbs));
         if ($index < $crumbCount) {         
-          echo '<li class="breadcrumb-item"><a class="link-btn" href="'. $value .'">' . $key . '</a></li>';
+          echo '<li class="breadcrumb-item"><a class="text-dark" href="'. $value .'">' . $key . '</a></li>';
         } else {        
           echo '<li class="breadcrumb-item active">' . $key . '</li>';
         }

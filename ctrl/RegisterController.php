@@ -4,6 +4,7 @@
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/SessionHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/HashHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/DBHelper.php"));
+    require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/FormatHelper.php"));
 
     class RegisterController implements IController
     {
@@ -20,6 +21,7 @@
             foreach ($params as $key => $value) {
                 $params[$key] = stripslashes(trim($value));
             }
+            $params = FormatHelper::sanitize($params); //sanitize user input
             
             $aftoken = $params["aftoken"];
             $name = $params["name"];

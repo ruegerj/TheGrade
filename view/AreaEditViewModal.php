@@ -27,37 +27,61 @@
     const submitBtn = document.querySelector('button[edit]');
     const cancelBtn = document.querySelector('button[cancel]');
     const form = document.querySelector('form[areaAdd]');
+    const titleConMax = <? echo $GLOBALS["config"]["validate"]["title"]["max"]; ?>;    
+    const titleConMin = <? echo $GLOBALS["config"]["validate"]["title"]["min"]; ?>;    
+    const descriptionConMax = <? echo $GLOBALS["config"]["validate"]["description"]["max"]; ?>;
+    const descriptionConMin = <? echo $GLOBALS["config"]["validate"]["description"]["min"]; ?>;
+    const redBorder = 'border-danger';
     let enableAutocompleteDescription = true;
 
     document.addEventListener('DOMContentLoaded', () => {
       titleElem.addEventListener('input', () => {
-        titleElem.classList.remove('border-danger');
+        titleElem.classList.remove(redBorder);
         if (enableAutocompleteDescription === true) {
           let title = titleElem.value;
           if (title.length > 0) {
             const defaultDescription = 'Description of area ';
-            descriptionElem.textContent = defaultDescription + title;        
+            descriptionElem.textContent = defaultDescription + title;  
+            descriptionElem.classList.remove(redBorder);      
           } else {
             descriptionElem.textContent = '';
           }          
         }
       });      
 
+      descriptionElem.addEventListener('input', () => {
+        descriptionElem.classList.remove(redBorder);
+      });
+
       submitBtn.addEventListener('click', () => {
         if (validate() === true) {          
           form.submit();
         }
-      });   
+      });         
 
       $('#areaAddModal').on('hide.bs.modal', clear);
     });
 
     function validate()
     {
-      if (titleElem.value.length > 0) {
+      const titleContent = titleElem.value.length;
+      const descriptionContent = descriptionElem.textLength;
+      let titleValid, descriptionValid, gradingValid;
+      if (titleContent > titleConMin && titleContent <= titleConMax) {
+          titleValid = true;          
+      } else {
+        titleValid = false;
+        titleElem.classList.add(redBorder);
+      }
+      if (descriptionContent > descriptionConMin && descriptionContent <= descriptionConMax) {
+        descriptionValid = true;
+      } else {
+        descriptionValid = false;
+        descriptionElem.classList.add(redBorder);
+      }
+      if (titleValid && descriptionValid) {
         return true;
       } else {
-        titleElem.classList.add('border-danger');
         return false;
       }
     }
@@ -65,8 +89,8 @@
     function clear()
     {
       form.reset();
-      titleElem.classList.remove('border-danger');
-      descriptionElem.classList.remove('border-danger');
+      titleElem.classList.remove(redBorder);
+      descriptionElem.classList.remove(redBorder);
       descriptionElem.textContent = '';
     }
 
