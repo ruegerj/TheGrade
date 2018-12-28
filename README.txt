@@ -20,7 +20,7 @@ So changes in the config can cause major malfunctions in the application.
 
 ------ THIRD PARTY LIBRARIES ------
 All rights reserved to the owners / creators of these libraries. The use of these libraries is inside the boundries 
-of their licenses.
+of their licenses. All licenses are inlcuded in the licenses folder of this application.
 Libraries used:
     Frontend: 
         - Bootstrap v4.1 by Twitter / included via CDN
@@ -31,6 +31,8 @@ Libraries used:
             => https://jquery.com/
         - popper.js v1.14.3 by FEDERICO ZIVOLO & CONTRIBUTORS / included via CDN
             => https://popper.js.org/
+        - js-datepicker v4.0.10 by The Qodesmith / included via CDN
+            => https://www.npmjs.com/package/js-datepicker
     Backend:
         - CryptoLib v1 by IcyApril / downloaded from GitHub
             => https://github.com/IcyApril/CryptoLib

@@ -6,24 +6,25 @@
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/DBHelper.php"));
     require_once(realpath($GLOBALS["config"]["paths"]["resources"]["module"] . "/TemplateHelper.php"));
 
-    class SubjectController implements IController
+    class ExamController implements IController
     {
         public static function get(array $params = array()): void
         {
             extract($params);
-            $areaId = $id;
-            if (isset($areaId) && PossessionHelper::isOwnerOfArea($areaId)) {
+            $subjectId = $id;           
+            if (isset($subjectId) && PossessionHelper::isOwnerOfSubject($subjectId)) {
                 $sessionHelper = new SessionHelper();
                 $dbHelper = new DBHelper();
-                $sessionHelper->generateAntiForgeryToken("/area");
+                $sessionHelper->generateAntiForgeryToken("/subject");
                 $sessionData = $sessionHelper->getSessionData();
-                $requestedArea = $dbHelper->getAreaById($areaId);                                 
-                $subjects = $dbHelper->getAllSubjects($areaId);
-                $viewData = new ViewData($requestedArea->Title, $sessionData, $subjects, 
-                array("Areas" => "/areas", $requestedArea->Title => "/area?id=" . $requestedArea->Id));
-                TemplateHelper::renderFileInTemplate("SubjectView.php", true, array("data" => $viewData, "areaId" => $areaId));            
+                $requestedSubject = $dbHelper->getSubjectById($subjectId);
+                $parentArea = $dbHelper->getAreaById($requestedSubject->AreaId);
+                $exams = $dbHelper->getAllExams($subjectId);
+                $viewData = new ViewData($requestedSubject->Title, $sessionData, $exams, 
+                array("Areas" => "/areas", $parentArea->Title => "/area?id=" . $parentArea->Id, $requestedSubject->Title => "subject?id=" . $requestedSubject->Id));
+                TemplateHelper::renderFileInTemplate("ExamView.php", true, array("data" => $viewData, "subjectId" => $requestedSubject->Id));
             } else {
-                header("Location: /"); //redirect to index page
+                header("Location: /"); //redirect to index;
             }
         }
 

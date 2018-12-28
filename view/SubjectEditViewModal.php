@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Area</h5>        
+        <h5 class="modal-title">Add Subject</h5>        
       </div>
       <div class="modal-body">
         <form areaAdd method="post">
@@ -36,30 +36,31 @@
     const descriptionConMax = <? echo $GLOBALS["config"]["validate"]["description"]["max"]; ?>;
     const descriptionConMin = <? echo $GLOBALS["config"]["validate"]["description"]["min"]; ?>;
     const gradingConMax = <? echo $GLOBALS["config"]["validate"]["grading"]["max"]; ?>;
-    const gradingConMin = <? echo $GLOBALS["config"]["validate"]["grading"]["min"]; ?>;
+    const gradingConMin = <? echo $GLOBALS["config"]["validate"]["grading"]["min"]; ?>; 
+    const redBorder = 'border-danger';
     let enableAutocompleteDescription = true;
 
     document.addEventListener('DOMContentLoaded', () => {
             titleElem.addEventListener('input', () => {
-            titleElem.classList.remove('border-danger');
-            if (enableAutocompleteDescription === true) {
-                let title = titleElem.value;
-                if (title.length > 0) {
-                    const defaultDescription = 'Description of subject ';
-                    descriptionElem.textContent = defaultDescription + title;   
-                    descriptionElem.classList.remove('border-danger');
-                } else {
-                    descriptionElem.textContent = '';
-                }          
-            }        
+              titleElem.classList.remove(redBorder);
+              if (enableAutocompleteDescription === true) {
+                  let title = titleElem.value;
+                  if (title.length > 0) {
+                      const defaultDescription = 'Description of subject ';
+                      descriptionElem.textContent = defaultDescription + title;   
+                      descriptionElem.classList.remove(redBorder);
+                  } else {
+                      descriptionElem.textContent = '';
+                  }          
+              }        
         });  
 
         descriptionElem.addEventListener('input', () => {
-            descriptionElem.classList.remove('border-danger');
+            descriptionElem.classList.remove(redBorder);
         });
 
         gradingElem.addEventListener('input', () => {
-            gradingElem.classList.remove('border-danger');
+            gradingElem.classList.remove(redBorder);
         });
 
         submitBtn.addEventListener('click', () => {
@@ -81,19 +82,19 @@
           titleValid = true;          
       } else {
         titleValid = false;
-        titleElem.classList.add('border-danger');
+        titleElem.classList.add(redBorder);
       }
       if (descriptionContent > descriptionConMin && descriptionContent <= descriptionConMax) {
         descriptionValid = true;
       } else {
         descriptionValid = false;
-        descriptionElem.classList.add('border-danger');
+        descriptionElem.classList.add(redBorder);
       }
       if (gradingContent > gradingConMin && gradingContent <= gradingConMax) {
         gradingValid = true;
       } else{
         gradingValid = false;
-        gradingElem.classList.add('border-danger');
+        gradingElem.classList.add(redBorder);
       }
       if (titleValid && descriptionValid && gradingValid) {
         return true;
@@ -105,10 +106,10 @@
     function clear()
     {
       form.reset();
-      titleElem.classList.remove('border-danger');
-      descriptionElem.classList.remove('border-danger');
+      titleElem.classList.remove(redBorder);
+      descriptionElem.classList.remove(redBorder);
       descriptionElem.textContent = '';
-      gradingElem.classList.remove('border-danger');
+      gradingElem.classList.remove(redBorder);
     }
 
     function launchModal(newArea = true, data)
@@ -117,7 +118,7 @@
         const subjectIdElem = '<input type="hidden" name="subjectId" value="' + data.Id + '" />'
         form.insertAdjacentHTML('afterbegin', subjectIdElem);
         form.setAttribute('action', '/subject-edit');
-        modalTitleElem.textContent = 'Edit subject';
+        modalTitleElem.textContent = 'Edit Subject';
         submitBtn.textContent = 'Save Changes';
         titleElem.value = data.Title;
         descriptionElem.textContent = data.Description;

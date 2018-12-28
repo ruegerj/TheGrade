@@ -8,9 +8,12 @@
 
     class RegisterController implements IController
     {
+        /**
+         * empty handler
+         */
         public static function get(array $params = array()) : void
         {            
-            //emtpy handler
+                        
         }
 
         public static function post(array $params = array()) : void
@@ -48,11 +51,11 @@
                     $sessionHelper->loginUser($createdUser);
 
                 } else {
-                    header("Location: " . $_SERVER["HTTP_REFERER"]);                    
+                    header("Location: /");                    
                 }                
             }
             else {                
-                header("Location: " . $_SERVER["HTTP_REFERER"]);
+                header("Location: /");
             }
         }
     }

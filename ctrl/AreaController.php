@@ -19,6 +19,9 @@
             TemplateHelper::renderFileInTemplate("AreaView.php", true, array("data" => $viewData));
         }
 
+        /**
+         * empty handler
+         */
         public static function post(array $params = array()) : void
         {
 

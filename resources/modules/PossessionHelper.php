@@ -32,7 +32,7 @@
             $requestedSubject = $dbHelper->getSubjectById($subjectId);
             if (isset($requestedSubject)) {
                 $areasOfUser = $dbHelper->getAllAreas($userId);
-                foreach ($areasOfUser as $area) { //check if subject is atached to an area of the current user
+                foreach ($areasOfUser as $area) { //check if subject is atached to an area of the current user                                       
                     if ($area->Id === $requestedSubject->AreaId) {
                         return true;
                     }                    

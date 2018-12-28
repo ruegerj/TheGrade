@@ -21,7 +21,7 @@
                 $sessionData = $sessionHelper->getSessionData();
                 $dbHelper->addArea($title, $description, $sessionData->UserId);
             }
-            header("Location: " . $_SERVER["HTTP_REFERER"]); //redirect to areas page
+            header("Location: /areas"); //redirect to areas page
         }
 
         public static function update(array $params = array()): void
@@ -39,7 +39,7 @@
                     $dbHelper->updateArea($areaId, $title, $description);
                 }
             }
-            header("Location: " . $_SERVER["HTTP_REFERER"]);
+            header("Location: /areas");
         }
 
         public static function delete(array $params = array()): void
@@ -53,7 +53,7 @@
                     $dbHelper->deleteArea($areaId);                   
                 }
             }
-            header("Location: " . $_SERVER["HTTP_REFERER"]); //redirect to areas page
+            header("Location: /areas"); //redirect to areas page
         }        
     }    
 ?>

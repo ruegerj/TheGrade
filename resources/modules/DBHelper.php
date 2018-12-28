@@ -299,6 +299,23 @@
         }
 
         /**
+         * updates the subject average of an area
+         * @param $areaId id of area
+         * @param $newAverage new subject average of area
+         */
+        public function updateAreaSubjectAverage(int $areaId, float $newAverage) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("UPDATE area SET SubjectAverage = :average WHERE Id = :areaId");
+                $statement->execute(array(":average" => $newAverage, ":areaId" => $areaId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
          * deletes an area including the atached subjects and their atached exams
          * @param $areaId id of area
          */
@@ -401,7 +418,25 @@
         }
 
         /**
+         * updates the grade average of an subject
+         * @param $subjectId id of subject
+         * @param $newAverage new average of subject
+         */
+        public function updateSubjectGradeAverage(int $subjectId, float $newAverage) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("UPDATE subject SET GradeAverage = :average WHERE Id = :subjectId");
+                $statement->execute(array(":average" => $newAverage, ":subjectId" => $subjectId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
          * deletes an subject including all atached exams
+         * @param $subjectId id of subject
          */
         public function deleteSubject(int $subjectId) : void
         {            
@@ -432,7 +467,7 @@
                 $exams = array();
                 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                     extract($row);
-                    array_push($exams, new Exam($Id, $Title, $Description, $Grade, $Grading, $SubjectId));
+                    array_push($exams, new Exam($Id, $Title, $Description, $Date, $Grade, $Grading, $SubjectId));
                 }
                 return $exams;
             } catch (Exception $ex) {
@@ -453,10 +488,52 @@
                 $statement->execute(array(":examId" => $examId));
                 if ($statement->rowCount() > 0) {
                     extract($statement->fetch(PDO::FETCH_ASSOC));
-                    return new Exam($Id, $Title, $Description, $Grade, $Grading, $SubjectId);
+                    return new Exam($Id, $Title, $Description, $Date, $Grade, $Grading, $SubjectId);
                 } else {
                     return null;
                 }
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * adds an exam to a subject
+         * @param $subjectId id of subject
+         * @param $title title of exam
+         * @param $description description of exam
+         * @param $date unix from date of exam
+         * @param $grade grade of exam
+         * @param $grading grading of exam as factor
+         */
+        public function addExam(int $subjectId, string $title, string $description, int $date, float $grade, float $grading) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("INSERT INTO exam (Title, Description, Date, Grade, Grading, SubjectId) VALUES (:title, :description, :date, :grade, :grading, :subjectId)");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":date" => $date, ":grade" => $grade, ":grading" => $grading, ":subjectId" => $subjectId));
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * updates the data of an exam
+         * @param $examId id of exam
+         * @param $title title of exam
+         * @param $description description of exam
+         * @param $date unix from date of exam
+         * @param $grade grade of exam
+         * @param $grading grading of exam as factor
+         */
+        public function updateExam(int $examId, string $title, string $description, int $date, float $grade, float $grading) : void
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("UPDATE exam SET Title = :title, Description = :description, Date = :date, Grade = :grade, Grading = :grading WHERE Id = :examId");
+                $statement->execute(array(":title" => $title, ":description" => $description, ":date" => $date, ":grade" => $grade, ":grading" => $grading, ":examId" => $examId));
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
                 die();

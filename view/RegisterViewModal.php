@@ -88,14 +88,13 @@
                     },
                     success: (data) => {
                         let result = JSON.parse(data);
+                        const emailDivjQ = $('input[reg][type="email"]').parent();
                         if (result.available === false) {                            
-                            emailDiv.setAttribute('title', mailExistsMessage);
-                            emailDiv.setAttribute('data-original-title', mailExistsMessage);
+                            emailDiv.setAttribute('title', mailExistsMessage);                           
                             $('[title]').tooltip();
                             mail = false;
-                        } else {                                                        
-                            emailDiv.removeAttribute('title');
-                            emailDiv.removeAttribute('data-original-title');
+                        } else {                            
+                            emailDivjQ.tooltip('dispose');
                             setSuccessState(elem);
                             mail = true
                         }

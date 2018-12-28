@@ -2,7 +2,7 @@
 <div class="container-fluid d-flex flex-column mt-3">
     <?
         $counter = 0;
-        foreach ($data->Data as $area) {
+        foreach ($data->Data as $area) :
             $last = $counter === count($data->Data) - 1 && count($data->Data) % 2 !== 0;
             if ($counter % 2 == 0) : ?>
                 <div class="row w-100 mb-3">
@@ -15,8 +15,15 @@
                                 <div class="overflow mb-0 ml-2 mr-2 w-50">
                                     <p class="m-0"><? echo $area->Description?></p>
                                 </div>
-                                <? if($area->SubjectAverage > 0) : ?>
-                                    <h5 class="mb-0 ml-2 mr-2 align-self-start"><? echo number_format($area->SubjectAverage, 2); ?></h5>
+                                <? if($area->SubjectAverage > 0) : 
+                                    $colorClass = "text-danger";
+                                    if ($area->SubjectAverage >= $GLOBALS["config"]["ui"]["grade"]["goodAbove"]) {
+                                        $colorClass = "text-success";
+                                    } else if ($area->SubjectAverage >= $GLOBALS["config"]["ui"]["grade"]["mediumAbove"]) {
+                                        $colorClass = "text-secondary";
+                                    }    
+                                ?>
+                                    <h5 class="mb-0 ml-2 mr-2 align-self-start <? echo $colorClass; ?>"><? echo number_format($area->SubjectAverage, 2); ?></h5>
                                 <? endif;?>
                                 <div class="mb-0 ml-2 d-flex flex-column justify-content-between">
                                     <i class="fas fa-cog mb-2 clickable" data-areaId="<? echo $area->Id; ?>"></i>
@@ -47,7 +54,7 @@
             if ($counter % 2 == 0) : ?>
                 </div>
             <? endif;                       
-        }          
+        endforeach;          
         
         if (count($data->Data) % 2 === 0) : ?>
             <div class="row w-100 mb-3">

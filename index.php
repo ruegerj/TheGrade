@@ -17,6 +17,8 @@
     require_once(realpath($config["paths"]["controller"] . "/AreaCRUDController.php"));
     require_once(realpath($config["paths"]["controller"] . "/SubjectController.php"));
     require_once(realpath($config["paths"]["controller"] . "/SubjectCRUDController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/ExamController.php"));
+    require_once(realpath($config["paths"]["controller"] . "/ExamCRUDController.php"));
 
     //start session, if needed
     new SessionHelper();
@@ -77,13 +79,8 @@
 
     //get-handler for the detail page of an area => with all subjects of area
     $router->get('/area', function ($request) {
-        authenticate();
-        extract($request->getBody()); //get params
-        if (isset($id) && $id > 0) {
-            SubjectController::get(array("areaId" => $id));
-        } else {
-            header("Location: /area"); //redirect to area overview
-        }
+        authenticate();        
+        SubjectController::get($request->getBody());
     });
 
     //post-handler for adding a subject
@@ -102,6 +99,30 @@
     $router->post('/subject-del', function ($request) {
         authenticate();
         SubjectCRUDController::delete($request->getBody());
+    });
+
+    //get-handler for a detail apge of a subject => with all exams of this subject
+    $router->get('/subject', function ($request) {
+        authenticate(); 
+        ExamController::get($request->getBody());
+    });
+
+    //post-handler for adding an exam
+    $router->post('/exam-add', function ($request) {
+        authenticate();
+        ExamCRUDController::add($request->getBody());
+    });
+
+    //post-handler for editing an exam
+    $router->post('/exam-edit', function ($request) {
+        authenticate();
+        ExamCRUDController::update($request->getBody());
+    });
+
+    //post-handler for deleting an exam
+    $router->post('/exam-del', function ($request) {
+        authenticate();
+        ExamCRUDController::delete($request->getBody());
     });
 
     //post handler for api calls to checkmail

@@ -36,8 +36,7 @@
             } else {
                 //render error-page
                 TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File: " . $contenFileName . " not found");
-            }
-    
+            }    
         }
     
         public static function renderErrorPage(string $code = "500", string $message = "Something went wrong", $exception) : void

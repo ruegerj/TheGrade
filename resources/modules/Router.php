@@ -45,11 +45,13 @@
         private function invalidMethodHandler() : void
         {
             TemplateHelper::renderErrorPage("405", "Method is not allowed", "Requested HTTp-MEthod is not allowed");
+            die();
         }
 
         private function defaultRequestHandler() : void
         {
-            TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File not found");            
+            TemplateHelper::renderErrorPage("404", "Requested page doesn't exist", "File not found");          
+            die();  
         }
 
         /**

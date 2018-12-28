@@ -10,5 +10,7 @@
         });
     })
 </script>
+<!-- Datepicker JS -->
+<script src="https://unpkg.com/js-datepicker"></script>
 </body>
 </html>
