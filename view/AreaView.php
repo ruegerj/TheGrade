@@ -5,14 +5,14 @@
         foreach ($data->Data as $area) :
             $last = $counter === count($data->Data) - 1 && count($data->Data) % 2 !== 0;
             if ($counter % 2 == 0) : ?>
-                <div class="row w-100 mb-3">
+                <div class="row w-100 mb-xl-3">
             <? endif; ?>
-                <div class="col-sm-6">
+                <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
                     <div class="card h-100">        
                         <div class="card-body">
-                            <div class="container m-2 d-flex flex-row justify-content-between">
-                                <h5 redirect class="card-title w-25 mb-0 mr-2 clickable overflow" data-areaid="<? echo $area->Id; ?>"><? echo $area->Title ?></h5>                            
-                                <div class="overflow mb-0 ml-2 mr-2 w-50">
+                            <div class="container d-flex flex-row justify-content-between row m-0">
+                                <h5 redirect class="card-title mb-1 mb-sm-1 mb-lg-0 mb-xl-0 clickable break-word col-12 col-sm-12 col-lg-3 col-xl-3 pl-lg-0" data-areaid="<? echo $area->Id; ?>"><? echo $area->Title ?></h5>                            
+                                <div class="break-word mb-2 mb-sm-2 mb-lg-0 mb-xl-0 w-50 col-12 col-sm-12 col-lg-4 col-xl-4">
                                     <p class="m-0"><? echo $area->Description?></p>
                                 </div>
                                 <? if($area->SubjectAverage > 0) : 
@@ -23,22 +23,24 @@
                                         $colorClass = "text-secondary";
                                     }    
                                 ?>
-                                    <h5 class="mb-0 ml-2 mr-2 align-self-start <? echo $colorClass; ?>"><? echo number_format($area->SubjectAverage, 2); ?></h5>
+                                    <h5 class="align-self-start col-12 col-sm-12 col-lg-3 col-xl-3 mb-3 mb-sm-3 mb-lg-0 mb-xl-0  <? echo $colorClass; ?>"><? echo number_format($area->SubjectAverage, 2); ?></h5>
                                 <? endif;?>
-                                <div class="mb-0 ml-2 d-flex flex-column justify-content-between">
-                                    <i class="fas fa-cog mb-2 clickable" data-areaId="<? echo $area->Id; ?>"></i>
-                                    <form action="/area-del" method="post">
-                                        <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken?>">
-                                        <input type="hidden" name="areaId" value="<? echo $area->Id; ?>">
-                                        <i class="fas fa-trash-alt mt-2 clickable" data-title="<? echo $area->Title; ?>"></i>                                    
-                                    </form>
+                                <div class="mb-0 d-flex flex-row flex-lg-column justify-content-center col-12 col-sm-12 col-lg-1 pr-lg-0">
+                                    <div class="d-flex flex-row flex-lg-column justify-content-between w-100 h-100">                                       
+                                        <i class="fas fa-cog clickable" data-areaId="<? echo $area->Id; ?>"></i>                                        
+                                        <form action="/area-del" method="post" class="d-flex flex-column justify-content-around">
+                                            <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken?>">
+                                            <input type="hidden" name="areaId" value="<? echo $area->Id; ?>">
+                                            <i class="fas fa-trash-alt clickable" data-title="<? echo $area->Title; ?>"></i>                                    
+                                        </form>                                    
+                                    </div>                                   
                                 </div>
                             </div>                        
                         </div>
                     </div>                
                 </div>
             <? if ($last) : ?>
-            <div class="col-sm-6">
+            <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
                 <div add class="card h-100 clickable hoverable">        
                     <div class="card-body">
                         <div class="container m-2 d-flex flex-row justify-content-between">
@@ -57,9 +59,9 @@
         endforeach;          
         
         if (count($data->Data) % 2 === 0) : ?>
-            <div class="row w-100 mb-3">
-                <div class="col-sm-6">
-                    <div add class="card h-100 clickable hoverable">        
+            <div class="row w-100 mb-xl-3">
+                <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
+                    <div add class="car d h-100 clickable hoverable">        
                         <div class="card-body">
                             <div class="container m-2 d-flex flex-row justify-content-between">
                                 <h5 class="card-title m-0">Add Area</h5>                    

@@ -9,7 +9,7 @@
           <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken; ?>">
           <input type="hidden" name="subjectId" value="<? echo $subjectId; ?>">
           <input type="text" name="title" class="from-control p-1 border mb-3 w-100 rounded" placeholder="Exam title" autocomplete="off">
-          <input type="text" name="date" class="from-control p-1 border mb-3 w-100 rounded" placeholder="Exam date">
+          <input type="text" name="date" class="from-control p-1 border mb-3 w-100 rounded" placeholder="Exam date" autocomplete="off">
           <textarea name="description" maxlength="<? echo $GLOBALS["config"]["validate"]["description"]["max"]; ?>" 
             cols="30" rows="8" class="form-control p-1 border mb-3 rounded" placeholder="Exam description (optional)"></textarea>
           <input type="number" name="grade" class="form-control p-1 border mb-3 rounded" placeholder="Grade" step="0.25"

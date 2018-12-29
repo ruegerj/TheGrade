@@ -3,17 +3,17 @@
     <? 
         $counter = 0;
         foreach($data->Data as $exam) : 
-            $last = $counter === count($data->Data) - 1 && count($data->Data) % 3 !== 0;
-            if ($counter % 3 == 0) : ?>
-                <div class="row w-100 mb-3">
+            $last = $counter === count($data->Data) - 1 && count($data->Data) % 2 !== 0;
+            if ($counter % 2 == 0) : ?>
+                <div class="row w-100 mb-xl-3">
             <? endif; ?>
-            <div class="col-sm-4">
+            <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
                     <div class="card h-100">        
                         <div class="card-body">
-                            <div class="container m-2 d-flex flex-row justify-content-between">
-                                <h5 redirect class="card-title w-25 mb-0 mr-2 overflow"><? echo $exam->Title ?></h5>                            
-                                <div class="overflow mb-0 ml-2 mr-2 w-50 d-flex flex-column">
-                                    <i><? echo date("d.m.Y", $exam->Date); ?></i>
+                            <div class="container d-flex flex-row justify-content-between m-0 row">
+                                <h5 redirect class="card-title mb-1 mb-sm-1 mb-lg-0 mb-xl-0 break-word col-12 col-sm-12 col-lg-3 col-xl-3 pl-lg-0"><? echo $exam->Title ?></h5>                            
+                                <div class="break-word mb-2 mb-sm-2 mb-lg-0 mb-xl-0 w-50 col-12 col-sm-12 col-lg-4 col-xl-4">
+                                    <i date data-unix="<? echo $exam->Date; ?>"><? echo date("d.m.Y", $exam->Date); ?></i>
                                     <p class="m-0"><? echo $exam->Description?></p>
                                 </div>
                                 <? if($exam->Grade > 0) : 
@@ -24,26 +24,28 @@
                                         $colorClass = "text-secondary";
                                     }
                                 ?>
-                                    <div class="mb-0 mr-2 ml-2 d-flex flex-column font-weight-light">
-                                        <h5 class="mb-0 align-self-start <? echo $colorClass; ?>"><? echo number_format($exam->Grade, 2); ?></h5>
-                                        <h5 class="mb-0 align-self-end"><? echo $exam->Grading * 100; ?>%</h5>
+                                    <div class="col-12 col-sm-12 col-lg-3 col-xl-3 mb-3 mb-sm-3 mb-lg-0 mb-xl-0 d-flex flex-row flex-lg-column justify-content-between font-weight-light">
+                                        <h5 class="mb-0 <? echo $colorClass; ?>"><? echo number_format($exam->Grade, 2); ?></h5>
+                                        <h5 class="mb-0"><? echo $exam->Grading * 100; ?>%</h5>
                                     </div>
                                 <? endif;?>
-                                <div class="mb-0 ml-2 d-flex flex-column justify-content-between">
-                                    <i class="fas fa-cog mb-2 clickable" data-examid="<? echo $exam->Id; ?>"></i>
-                                    <form action="/exam-del" method="post">
-                                        <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken?>">
-                                        <input type="hidden" name="subjectId" value="<? echo $subjectId; ?>">
-                                        <input type="hidden" name="examId" value="<? echo $exam->Id; ?>">
-                                        <i class="fas fa-trash-alt mt-2 clickable" data-title="<? echo $exam->Title; ?>"></i>                                    
-                                    </form>
+                                <div class="mb-0 d-flex flex-row flex-lg-column justify-content-center col-12 col-sm-12 col-lg-1 pr-lg-0">
+                                    <div class="d-flex flex-row flex-lg-column justify-content-between w-100 h-100">
+                                        <i class="fas fa-cog mb-2 clickable" data-examid="<? echo $exam->Id; ?>"></i>
+                                        <form action="/exam-del" method="post" class="d-flex flex-column justify-content-around">
+                                            <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken?>">
+                                            <input type="hidden" name="subjectId" value="<? echo $subjectId; ?>">
+                                            <input type="hidden" name="examId" value="<? echo $exam->Id; ?>">
+                                            <i class="fas fa-trash-alt mt-2 clickable" data-title="<? echo $exam->Title; ?>"></i>                                    
+                                        </form>                                
+                                    </div>
                                 </div>
                             </div>                        
                         </div>
                     </div>                
                 </div>
             <? if ($last) : ?>
-                <div class="col-sm-4">
+                <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
                     <div add class="card h-100 clickable hoverable">        
                         <div class="card-body">
                             <div class="container m-2 d-flex flex-row justify-content-between">
@@ -56,14 +58,14 @@
                 </div>
             <? endif;?>            
             <? $counter++;
-            if ($counter % 3 == 0) : ?>
+            if ($counter % 2 == 0) : ?>
                 </div>
             <? endif;                 
         endforeach;
 
-        if (count($data->Data) % 3 === 0) : ?>
+        if (count($data->Data) % 2 === 0) : ?>
             <div class="row w-100 mb-3">
-                <div class="col-sm-4">
+                <div class="col-xl-6 mb-3 mb-sm-3 mb-md-3 mb-lg-3 mb-xl-0">
                     <div add class="card h-100 clickable hoverable">        
                         <div class="card-body">
                             <div class="container m-2 d-flex flex-row justify-content-between">
@@ -107,6 +109,13 @@
                     subjectModal.showModal(false, examData);
                 });
             });
+
+            Array.from(document.querySelectorAll('[date]')).forEach(e => {
+                const uf = new UnixFormatter(e.dataset.unix);
+                e.setAttribute('title', uf.textFormat);
+
+            });
+            $('[title]').tooltip();
         });
     })();
 </script>
