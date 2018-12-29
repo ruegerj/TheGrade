@@ -47,7 +47,7 @@
                 {
                     $hashedPassword = HashHelper::generateHash($password);
                     $dbHelper = new DBHelper();                    
-                    $createdUser = $dbHelper->addUser($name, $prename, $email, $hashedPassword); 
+                    $createdUser = $dbHelper->addUser($name, $prename, $email, $hashedPassword, time()); 
                     $sessionHelper->loginUser($createdUser);
 
                 } else {

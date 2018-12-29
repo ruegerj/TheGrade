@@ -1,7 +1,7 @@
 <?
     class User
     {
-        function __construct(int $id, string $name, string $prename, string $email, string $password)
+        function __construct(int $id, string $name, string $prename, string $email, string $password, int $registrationDate)
         {
             $this->Id = $id;
             $this->Name = $name;
@@ -15,5 +15,6 @@
         public $Prename;
         public $Email;
         public $Password;
+        public $RegistrationDate;
     }
 ?>

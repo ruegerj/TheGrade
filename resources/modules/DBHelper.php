@@ -95,12 +95,12 @@
          * @param $email email of user
          * @param $password password of user
          */
-        public function addUser(string $name, string $prename, string $email, string $password) : User
+        public function addUser(string $name, string $prename, string $email, string $password, int $registrationDate) : User
         {
             try {
                 $pdo = $this->pdoConnection;
-                $statement = $pdo->prepare("INSERT INTO user (Name, Prename, Email, Password) VALUES (:name, :prename, :email, :password)");
-                $statement->execute(array(":name" => $name, ":prename" => $prename, ":email" => $email, ":password" => $password));   
+                $statement = $pdo->prepare("INSERT INTO user (Name, Prename, Email, Password, RegistrationDate) VALUES (:name, :prename, :email, :password, :registrationDate)");
+                $statement->execute(array(":name" => $name, ":prename" => $prename, ":email" => $email, ":password" => $password, ":registrationDate" => $registrationDate));   
                 return $this->getUserById($newId = $pdo->lastInsertId());            
             } catch (PDOException $ex) {
                 TemplateHelper::renderErrorPage("500", "Service unavailable", $ex->getMessage());
@@ -122,7 +122,7 @@
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
                 if ($statement->rowCount() > 0) {                    
                     extract($result); // eg. turn $result["name"] into $name 
-                    return new User($Id, $Name, $Prename, $Email, $Password);                                 
+                    return new User($Id, $Name, $Prename, $Email, $Password, $RegistrationDate);                                 
                 } else {
                     return null;
                 }
