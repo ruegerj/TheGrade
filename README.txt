@@ -1,7 +1,12 @@
 ------ INSTALLATION ON APACHE ------
 The content of this directory have to be placed directly in the DOCUMENT_ROOT folder of the Apache.
 If you want to place the whole folder in the Apache, make sure you change the DOCUMENT_ROOT in the http.conf
-file.
+file. After this restart your Apache-Server.
+
+------ PHP CONFIGURATION ------
+Note this application is written with the shortags of php. This is an option wich isnt enabled by default.
+You can enable this option in the php-folder in the php.ini file. Open the file and set the value of "short_open_tag"
+to "On". After this restart your Apache-Server.
 
 ------ DB SETUP -----
 This application configures and creates the required database itself with the first request. Just make sure your

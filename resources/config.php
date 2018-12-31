@@ -37,7 +37,7 @@
             "activity" => "USER_LAST_ACTIVITY"      
         ),
         "cookie" => array( //all keys used for cookies
-            "remember" => "REMEBER_ME"
+            "remember" => "REMEMBER_ME"
         ),
         //time in minutes someone without remember-me cookie will be automatically logged out
         "autologout" => array( 
