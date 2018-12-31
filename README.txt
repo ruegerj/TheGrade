@@ -36,3 +36,19 @@ Libraries used:
     Backend:
         - CryptoLib v1 by IcyApril / downloaded from GitHub
             => https://github.com/IcyApril/CryptoLib
+
+------- SECURITY ------
+-   All the passwords are hashed with the ARGON2i algorythm before theyre stored as hash in the database.
+-   Every form is on the client-side and the server-side validated (validate configurations via the config.php file).
+    Also every form is equipped with an antiforgery-token wich is stored in the session and will be recreated on every site
+    request to prevent CSRF-attacks.
+-   The access on files from the client-side shouldn't be possible because of the routing configuration. But every folder is from
+    access protected with an .htaccess file anyways.
+-   All characters of a user input are sanitized / escaped before processing further to prevent XSS-attacks.
+-   The remember-me cookie is created to be "unforgeable". The content of the cookie is splitted in three parts. The first part is the 
+    user-id encoded as Base64. The second part is a ramdom generated token, hashed with ARGON2i algorythm. The third part is a control-hash
+    generated from the first two content-parts by a private-key using the hmac-method and the sha256 algorythm. The cookie is per default 
+    valid for seven days (changes can be made in the config.php file). After the creation the user-token and the control-hash are stored in
+    the database to validate the cookie in the future. The private key is a 256 char long random string generated with the CriptoLib library.
+-   Cookie theft isnt protected yet (a small protection exists because of the prevention of XSS-attacks). This requires a HTTPS-configuration 
+    wich doesnt exist at the moment.

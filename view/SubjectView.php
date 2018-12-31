@@ -30,12 +30,12 @@
                                 <? endif;?>
                                 <div class="mb-0 d-flex flex-row flex-lg-column justify-content-center col-12 col-sm-12 col-lg-1 pr-lg-0">
                                     <div class="d-flex flex-row flex-lg-column justify-content-between w-100 h-100">
-                                        <i class="fas fa-cog mb-2 clickable" data-subjectId="<? echo $subject->Id; ?>"></i>
-                                        <form action="/subject-del" method="post" class="d-flex flex-column justify-content-around">
+                                        <i class="fas fa-cog mb-0 mb-sm-0 mb-md-0 mb-lg-2 mb-xl-2 clickable" data-subjectId="<? echo $subject->Id; ?>"></i>
+                                        <form action="/subject-del" method="post" class="d-flex flex-column justify-content-around mt-0 mt-sm-0 mt-md-0 mt-xl-2 mt-lg-2">
                                             <input type="hidden" name="aftoken" value="<? echo $data->SessionData->AntiForgeryToken?>">
                                             <input type="hidden" name="areaId" value="<? echo $areaId; ?>">
                                             <input type="hidden" name="subjectId" value="<? echo $subject->Id; ?>">
-                                            <i class="fas fa-trash-alt mt-2 clickable" data-title="<? echo $subject->Title; ?>"></i>                                    
+                                            <i class="fas fa-trash-alt clickable" data-title="<? echo $subject->Title; ?>"></i>                                    
                                         </form>                                    
                                     </div>
                                 </div>

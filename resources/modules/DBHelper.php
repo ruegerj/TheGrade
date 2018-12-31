@@ -145,7 +145,7 @@
                 if ($statement->rowCount() > 0) {
                     $result = $statement->fetch(PDO::FETCH_ASSOC);
                     extract($result); //extract variables from array
-                    return new User($Id, $Name, $Prename, $Email, $Password);
+                    return new User($Id, $Name, $Prename, $Email, $Password, $RegistrationDate);
                 } else {
                     return null;
                 }
@@ -344,6 +344,28 @@
             try {
                 $pdo = $this->pdoConnection;
                 $statement = $pdo->prepare("SELECT subject.Id, subject.Title, subject.Description, subject.Grading, subject.GradeAverage, subject.AreaId FROM area INNER JOIN subject ON area.Id = subject.AreaId WHERE area.Id = :areaId");   
+                $statement->execute(array(":areaId" => $areaId));
+                $subjects = array();
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    array_push($subjects, new Subject($Id, $Title, $Description, $Grading, $GradeAverage, $AreaId));
+                }
+                return $subjects;
+            } catch (Exception $ex) {
+                TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());
+                die();
+            }
+        }
+
+        /**
+         * gets all subjects of an area wich have exams attached to them
+         * @param $areaId id of area
+         */
+        public function getAllSubjectsWithExams(int $areaId)
+        {
+            try {
+                $pdo = $this->pdoConnection;
+                $statement = $pdo->prepare("SELECT subject.Id, subject.Title, subject.Description, subject.Grading, subject.GradeAverage, subject.AreaId FROM area INNER JOIN subject ON area.Id = subject.AreaId INNER JOIN exam ON subject.Id = exam.SubjectId WHERE area.Id = :areaId AND (SELECT COUNT(exam.Id) FROM exam WHERE exam.SubjectId = subject.Id) > 0");
                 $statement->execute(array(":areaId" => $areaId));
                 $subjects = array();
                 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {

@@ -62,9 +62,9 @@
         private static function updateAreaSubjectAverage(int $areaId) : void
         {
             $dbHelper = new DBHelper();
-            $subjectsOfArea = $dbHelper->getAllSubjects($areaId);
+            $subjectsOfAreaWithExams = $dbHelper->getAllSubjectsWithExams($areaId);
             $subjectCount = $averageSum = 0;
-            foreach ($subjectsOfArea as $subject) { //add all the gradings to divide the subject average sum with it
+            foreach ($subjectsOfAreaWithExams as $subject) { //add all the gradings to divide the subject average sum with it
                 $subjectCount += $subject->Grading; 
                 $averageSum += ($subject->GradeAverage * $subject->Grading);
             }
