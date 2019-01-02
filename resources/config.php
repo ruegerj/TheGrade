@@ -21,13 +21,13 @@
                 "module" => $documentRoot . "/resources/modules",
                 "template" => $documentRoot . "/resources/templates"
             ),
-            "lib" => array(
+            "lib" => array( //paths to the integrated third party libraries
                 "crypto" => $documentRoot . "/resources/lib/CryptoLib-master/src"
             ),         
             "controller" => $documentRoot . "/ctrl",
             "view" => $documentRoot . "/view"
         ), 
-        "session" => array( //all keys used in the session
+        "session" => array( //all cutom keys used in the session
             "user" => "USER_TOKEN",
             "forgery" => "ANTIFORGERY_TOKEN",
             "id" => "USER_ID",
@@ -46,7 +46,7 @@
         "ui" => array( 
             "grade" => array(
                 "goodAbove" => 5.0, //grades with this value and above will displayed green
-                "mediumAbove" => 4.0, //grades with this value and above will displayed grey
+                "mediumAbove" => 4.0, //grades with this value and above will displayed gray
                 "badAbove" => 1.0 //grades with this value and above will displayed red
             )
         ),
@@ -55,11 +55,11 @@
                 "pattern" => "/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/",                
             ),
             "name" => array( //amount of chars allowed
-                "max" => 30,
+                "max" => 30, //max is 100 because of table structure
                 "min" => 3
             ),
             "prename" => array( //amount of chars allowed
-                "max" => 30,
+                "max" => 30, //max is 100 because of table structure
                 "min" => 3
             ),
             "password" => array( //amount of chars allowed
@@ -67,18 +67,18 @@
                 "min" => 8
             ),   
             "title" => array( //amount of chars allowed
-                "max" => 50,
+                "max" => 75, //max is 100 because of table structure
                 "min" => 1
             ),
             "description" => array( //amount of chars allowed
-                "max" => 750,
+                "max" => 750, //unlimited size in db
                 "min" => 0
             ),
             "grading" => array( //amount of chars allowed
                 "max" => 500,
                 "min" => 1
             ),
-            "grade" => array( //min and max value of a grade
+            "grade" => array( //min and max value of a grade from swiss school-system
                 "max" => 6,
                 "min" => 1
             ),
@@ -94,7 +94,7 @@
         )   
     );
 
-    //Error reporting
+    //Settings for error-reporting
     ini_set("error_reporting", "true");
     error_reporting(E_ALL|E_STRCT);
 ?>

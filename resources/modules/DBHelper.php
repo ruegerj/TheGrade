@@ -15,7 +15,7 @@
             $this->establishConnection();
         }
 
-        //connect to db
+        //try connect to db
         private function establishConnection() : void
         {
             $host = $GLOBALS["config"]["db"]["host"];
@@ -33,7 +33,7 @@
         }        
 
         /**
-         * Checks if the sceified DB from the config exists already
+         * Checks if the specified DB from the config exists already
          */
         public static function checkDBExists() : bool
         {            
@@ -186,8 +186,7 @@
         {
             try {
                 $pdo = $this->pdoConnection;
-                $statement = $pdo->prepare("INSERT INTO remembermetoken (Creation, Token, PrivateKey, UserId)" .
-                "VALUES (:creation, :token, :privateKey, :userId)");
+                $statement = $pdo->prepare("INSERT INTO remembermetoken (Creation, Token, PrivateKey, UserId) VALUES (:creation, :token, :privateKey, :userId)");
                 $statement->execute(array(":creation" => $token->Creation, ":token" => $token->Token, ":privateKey" => $token->PrivateKey, ":userId" => $userId));                
             } catch (Exception $ex) {
                 TemplateHelper::renderErrorPage("500", "An error occured", $ex->getMessage());

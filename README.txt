@@ -5,7 +5,7 @@ file. After this restart your Apache-Server.
 
 ------ PHP CONFIGURATION ------
 Note this application is written with the shortags of php. This is an option wich isnt enabled by default.
-You can enable this option in the php-folder in the php.ini file. Open the file and set the value of "short_open_tag"
+You can enable this option in the php.ini file located in the php folder. Open the file and set the value of "short_open_tag"
 to "On". After this restart your Apache-Server.
 
 ------ DB SETUP -----
@@ -16,7 +16,7 @@ If you dont have an user like the described "root" or its named different on you
 
 ------ UPDATE THE CREATE-SCRIPT OF THE DB ------
 If you want to update the backup / create-script of the db make sure when you generate the backup-script
-with phpMyAdmin to check the the option "Add CREATE DATABASE / USE statement" and to uncheck the data-option
+with phpMyAdmin to check the  option "Add CREATE DATABASE / USE statement" and to uncheck the data-option
 from the tables selection in the custom export settings.
 
 ------ CONFIGURATION ------
