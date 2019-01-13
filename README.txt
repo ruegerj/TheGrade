@@ -42,7 +42,28 @@ Libraries used:
         - CryptoLib v1 by IcyApril / downloaded from GitHub
             => https://github.com/IcyApril/CryptoLib
 
-------- SECURITY ------
+------ INSPIRATION & IDEAS ------
+All this code in this project is written by me. But I have taken some inspirations and ideas here and there from online
+resources. Especially with tricky problems to solve. The biggest sources for examples and problem solves where: 
+    - stackoverflow: https://stackoverflow.com/
+    - Bootstrap Documentation: https://getbootstrap.com/docs/4.0/getting-started/introduction/
+    - W3Schools: https://www.w3schools.com/php/default.asp
+Also for the MVC pattern, the architecture and the RememberMe function I have adapted and customized / refined some 
+ideas & inspirations from the internet:
+    - Router: 
+        the article "How to build a basic server side routing system in PHP." written by John O. Paul on the 3. July 
+        2018 and published on the website "The Andela Way" 
+        https://medium.com/the-andela-way/how-to-build-a-basic-server-side-routing-system-in-php-e52e613cf241
+    - Folder Architecture & Templating: 
+        the article "Organize Your Next PHP Project the Right Way" written by Derek Reynolds on the 20. July 2009
+        and published on the website "envatotuts+"
+        https://code.tutsplus.com/tutorials/organize-your-next-php-project-the-right-way--net-5873
+    - RememberMe: 
+        an answer on stackoverflow to the question "Keep me logged in - best approach", answered by the user 
+        ircmaxell on the 24. June 2013 and edited by the user Adam on the 27. April 2016.
+        http://stackoverflow.com/a/17266448
+
+------ SECURITY ------
 -   All the passwords are hashed with the ARGON2i algorythm before theyre stored as hash in the database.
 -   Every form is on the client-side and the server-side validated (validate configurations via the config.php file).
     Also every form is equipped with an antiforgery-token wich is stored in the session and will be recreated on every site
