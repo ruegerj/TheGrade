@@ -9,8 +9,8 @@
        public static function get(array $params = array()) : void
        {
             $sessionHelper = new SessionHelper();
-            $token = $sessionHelper->generateAntiForgeryToken("/");
-            TemplateHelper::renderFileInTemplate("LoginView.php", false, array($params, "title" => "Welcome", "afToken" => $token));            
+            $token = $sessionHelper->generateAntiForgeryToken("/");            
+            TemplateHelper::renderFileInTemplate("LoginView.php", false, array("default" => $params, "title" => "Welcome", "afToken" => $token));            
        }    
 
        public static function post(array $params = array()) : void
@@ -32,13 +32,15 @@
                         if ($passwordMatch === true) {                                                     
                             $sessionHelper->loginUser($user, $rememberMe);
                         } else {
-                            header("Location: /"); //redirect to index                                
+                            //header("Location: /"); //redirect to index                             
+                            LoginController::get(array("email" => $emailLogin));                               
                         }
                     } else {
-                        header("Location: /"); //redirect to index
+                        //header("Location: /"); //redirect to index
+                        LoginController::get(array("email" => $emailLogin));
                     }
                 } else {
-                    header("Location: /"); //redirect to index
+                    header("Location: /"); //redirect to index                    
                 }                                    
             } else {
                 header("Location: /"); //redirect to index

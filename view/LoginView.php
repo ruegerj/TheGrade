@@ -40,8 +40,10 @@
                         <input type="hidden" name="aftoken" value="<? echo $afToken ?>">
                         <input type="hidden" name="rememberMe" value>
                         <hr class="w-100 border border-white mt-3 mb-3" />
-                        <input class="form-control mb-3 border border-lg" type="email" name="emailLogin" placeholder="You're E-Mail">                                                              
-                        <input class="form-control mb-3 border border-lg" type="password" name="passwordLogin" placeholder="You're Password">
+                        <input class="form-control mb-3 border border-lg <? echo isset($default["email"]) ? "border-danger" : ""; ?>" type="email" 
+                        name="emailLogin" placeholder="You're E-Mail" value="<? echo isset($default["email"]) ? $default["email"] : "";?>">                                                              
+                        <input class="form-control mb-3 border border-lg <? echo isset($default["email"]) ? "border-danger" : ""; ?>" type="password" 
+                        name="passwordLogin" placeholder="You're Password">
                         <div id="rememberContainer" class="d-flex flex-row clickable">
                             <h5 class="m-0 font-weight-light pr-3">Remember Me</h5>
                             <h5 class="m-0"><i id="rememberIcon" class="text-success fa"></i></h5>
@@ -102,7 +104,6 @@
             const mailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             const minPassLength = 8;
             const inputs = Array.from(document.querySelectorAll('input[name=emailLogin], input[name=passwordLogin]'));
-            console.log(inputs);
             inputs.forEach(e => {
                 if (e.type.toLowerCase() === "email") {                    
                     mailValid = mailPattern.test(String(e.value));

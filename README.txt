@@ -5,7 +5,7 @@ file. After this restart your Apache-Server.
 
 ------ PHP CONFIGURATION ------
 Note this application is written with the shortags of php. This is an option wich isnt enabled by default.
-You can enable this option in the php.ini file located in the php folder. Open the file and set the value of "short_open_tag"
+You can enable this option in the php.ini file located in the php folder on your Apache-Server. Open the file and set the value of "short_open_tag"
 to "On". After this restart your Apache-Server.
 
 ------ DB SETUP -----
