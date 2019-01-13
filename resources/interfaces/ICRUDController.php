@@ -1,4 +1,7 @@
 <?
+    /**
+     * Defines the structure for a controller wich can handle CRUD-operations
+     */
     interface ICRUDController 
     {
         public static function add(array $params = array()) : void;

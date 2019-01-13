@@ -1,4 +1,7 @@
 <?
+    /**
+     * Represents an Exam from the DB in the application
+     */
     class Exam
     {
         function __construct(int $id, string $title, string $description, int $date, float $grade, float $grading, int $subjectId)

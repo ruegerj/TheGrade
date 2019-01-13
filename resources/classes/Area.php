@@ -1,4 +1,7 @@
 <?
+    /**
+     * Represents an Area from the DB in the application
+     */
     class Area
     {
         function __construct(int $id, string $title, string $description, float $subjectAverage, int $userId)

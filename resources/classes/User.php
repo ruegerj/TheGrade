@@ -1,4 +1,7 @@
 <?
+    /**
+     * Represents a User from the DB in the application
+     */
     class User
     {
         function __construct(int $id, string $name, string $prename, string $email, string $password, int $registrationDate)

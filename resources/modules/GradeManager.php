@@ -37,7 +37,6 @@
             }
         }
 
-
         /**
          * calcs and updates the grade average of a subject
          * @param $subjectId id of subject

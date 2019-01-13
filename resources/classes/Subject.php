@@ -1,4 +1,7 @@
 <?
+    /**
+     * Represents a Subject from the DB in the application
+     */
     class Subject
     {
         function __construct(int $id, string $title, string $description, float $grading, float $gradeAverage, int $areaId)

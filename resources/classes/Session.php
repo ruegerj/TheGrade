@@ -1,4 +1,7 @@
 <?
+    /**
+     * Is a data-container for all data wich can be stored in the session
+     */
     class Session
     {
         public $UserToken;

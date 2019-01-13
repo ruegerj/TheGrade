@@ -2,6 +2,9 @@
     require_once($_SERVER["DOCUMENT_ROOT"] . "/resources/config.php");
     require_once($config["paths"]["resources"]["interface"] . "/IRequest.php");
 
+    /**
+     * Represents a Request in the application
+     */
     class Request implements IRequest
     {
         //constructor
